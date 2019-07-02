@@ -1,4 +1,4 @@
-package raitingMedio;
+package it.unibo.bd1819.raitingMedio;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -42,7 +42,7 @@ public class jobJoin {
 /////////////////												JOB2
 */
 
-		JobConf jobFilter = new JobConf(raitingMedio.jobJoin.class);
+		JobConf jobFilter = new JobConf(jobJoin.class);
 		jobFilter.setJobName("Sorting Raiting medio-Libro");
 		Path inputPath4 = new Path("outputJoin"),
 				outputPath3 = new Path("outputFilter");
@@ -75,7 +75,7 @@ public class jobJoin {
 
 
 
-		JobConf jobSort = new JobConf(raitingMedio.jobJoin.class);
+		JobConf jobSort = new JobConf(jobJoin.class);
 
 
 		jobSort.setJobName("Sorting Raiting medio-Libro");

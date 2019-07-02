@@ -1,4 +1,4 @@
-package raitingMedio;
+package it.unibo.bd1819.raitingMedio;
 
 import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.Text;
