@@ -25,7 +25,7 @@ targetCompatibility = 1.7
     provided
 }*/
 
-mainClassName = 'it.unibo.bd1819.mocktest.SparkMockMain'
+mainClassName = 'it.unibo.bd1819.ratingmedio.MainJob'
 
 // this makes the scala classes builds alongside the java ones.
 sourceSets {
@@ -107,14 +107,14 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 task mapReduceJar(type: ShadowJar) {
     classifier = 'mr'
-    manifest.attributes 'Main-Class': 'it.unibo.bd1819.Main'
+    manifest.attributes 'Main-Class': 'it.unibo.bd1819.ratingmedio.MainJob'
     from(shadowJar.from())
     zip64 true
 }
 
 task sparkJar(type: ShadowJar) {
     classifier = 'spark'
-    manifest.attributes 'Main-Class': 'it.unibo.bd1819.ScalaMain'
+    manifest.attributes 'Main-Class': 'it.unibo.bd1819.Main'
     from(shadowJar.from())
     zip64 true
 }
