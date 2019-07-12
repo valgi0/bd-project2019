@@ -49,4 +49,23 @@ package object bd1819 {
     data.createOrReplaceTempView(tableName)
   }
 
+
+  /**
+    * Return the path to books.csv file
+    * @return
+    */
+  def pathToBooks = "~/bd-project2019-master/dataset/books.csv"
+
+  /**
+    * Return the path to ratings.csv file
+    * @return
+    */
+  def pathToRating = "~/bd-project2019-master/dataset/ratings.csv"
+
+  /**
+    * Return the path to to_read.csv file
+    * @return
+    */
+  def pathToBookmarks = "~/bd-project2019-master/dataset/to_read.csv"
+
 }
