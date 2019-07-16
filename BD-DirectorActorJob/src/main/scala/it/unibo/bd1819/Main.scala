@@ -2,31 +2,35 @@ package it.unibo.bd1819
 
 import it.unibo.bd1819.job1.MainJob1
 import it.unibo.bd1819.job2.{Configuration, MainJob2}
+import org.apache.spark.SparkContext
+import org.apache.spark.sql.SparkSession
 
-object Main {
+object Main{
 
   final private val JOB1 = "JOB1"
   final private val JOB2 = "JOB2"
 
-  def main(args: List[String]) = {
-    if (args.size != 2 && args.size != 4){
+  def main(args: Array[String]): Unit = {
+    if (args.length != 1 && args.length != 3){
       println("USAGE: ./director-actor-job-2.1.2-spark.jar <JOB1 | JOB2>  [EXECUTORS TASKS]")
+      println("Found: " + args.length)
     }else{
-      if(args.size == 4) {
-        val conf = new Configuration(args)
-        if (args(1) == JOB1) {
-          MainJob1.executeJob(conf)
+      val sqlcontext = SparkSession.builder.master("local[*]").getOrCreate.sqlContext
+      if(args.length == 3) {
+        val conf = Configuration(args.toList)
+        if (args(0) == JOB1) {
+          MainJob1.apply.executeJob(conf, sqlcontext)
         } else {
-          MainJob2.executeJob(conf)
+          MainJob2.apply.executeJob(conf, sqlcontext)
         }
       }else{
+        if (args(0) == JOB1) {
+          MainJob1.apply.executeJob(Configuration(), sqlcontext)
+        } else {
+          MainJob2.apply.executeJob(Configuration(), sqlcontext)
+        }
+      }
 
-      }
-      if (args(1) == JOB1) {
-        MainJob1.executeJob()
-      } else {
-        MainJob2.executeJob()
-      }
     }
   }
 

@@ -12,8 +12,8 @@ class Configuration {
 object Configuration{
   def apply(args: List[String]): Configuration = {
     var c = new Configuration()
-    c.executors = Int(args(2))
-    c.tasksPerExecutor = Int(args(3))
+    c.executors = args(1).toInt
+    c.tasksPerExecutor = args(2).toInt
     c
   }
 
@@ -23,5 +23,6 @@ object Configuration{
     val c =new Configuration()
     c.executors = exec
     c.tasksPerExecutor = task
+    c
   }
 }

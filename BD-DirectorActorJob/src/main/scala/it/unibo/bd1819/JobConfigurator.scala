@@ -57,7 +57,7 @@ object JobConfigurator{
   }
 
   def getDefault(context: SQLContext) : JobConfigurator = {
-    val jc = new JobConfigurator
+    val jc = new JobConfigurator()
     jc.setSqlContext(context)
     jc.setParallelism(executors, taskForExceutor)
     jc.setPartitions(executors, taskForExceutor)

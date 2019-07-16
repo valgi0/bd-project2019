@@ -6,25 +6,21 @@ import org.apache.spark.{SparkConf, SparkContext, sql}
 
 package object bd1819 {
 
-  var conf = new SparkConf().setAppName("Best rating!").setMaster("local[*]")
-  final val sparkContext = new SparkContext(conf)
-  final val sqlContext = SparkSession.builder.getOrCreate.sqlContext
-
-
   /**
     * Function that creates a new SQLContext
     * @return a new instance of SQLContext
     */
-  def getSqlSparkContext = sqlContext
+  //def getSqlSparkContext = sqlContext
 
   /**
     * Function used to load a csv file from hadoop directory in to a DataFrame object
     * @param file path to the file
     * @return DataFrame
     */
-  def loadCsvfile(file: String): sql.DataFrame = {
+  def loadCsvfile(file: String, sqlContext: SQLContext): sql.DataFrame = {
     sqlContext.read.format("csv")
-      .option("headers", "true")
+      .option("header", "true")
+      .option("mode", "DROPMALFORMED")
       .option("inferSchema", "true")
       .load(file)
   }
@@ -54,18 +50,18 @@ package object bd1819 {
     * Return the path to books.csv file
     * @return
     */
-  def pathToBooks = "~/bd-project2019-master/dataset/books.csv"
+  def pathToBooks = "./bd-project2019-master/dataset/books.csv"
 
   /**
     * Return the path to ratings.csv file
     * @return
     */
-  def pathToRating = "~/bd-project2019-master/dataset/ratings.csv"
+  def pathToRating = "./bd-project2019-master/dataset/ratings.csv"
 
   /**
     * Return the path to to_read.csv file
     * @return
     */
-  def pathToBookmarks = "~/bd-project2019-master/dataset/to_read.csv"
+  def pathToBookmarks = "./bd-project2019-master/dataset/to_read.csv"
 
 }
