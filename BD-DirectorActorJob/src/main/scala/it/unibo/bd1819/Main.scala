@@ -1,14 +1,37 @@
 package it.unibo.bd1819
 
-class Main {
+import it.unibo.bd1819.job1.MainJob1
+import it.unibo.bd1819.job2.{Configuration, MainJob2}
+import org.apache.spark.SparkContext
+import org.apache.spark.sql.SparkSession
 
-  // val booksDF = spark.read.format("csv").option("header", "true").option("inferschema", "true").load("bd-project2019-master/dataset/books.csv")
-  //val ida = booksDF.select("book_id", "authors")
-  //def g(x:String) = if(x.contains(',')) x.split(',').toList else List(x)
-  //val tmp =booksDF.select("authors").flatMap(row1 => g(row1.getString(0)))
-  //booksDF.sqlContext.sql("select authors, count(book_id) from tabTMP group by authors").show  // raggruppa per ogni autore il numero di libri scritti
-  // val idavgrating = rating.sqlContext.sql("select book_id, avg(rating) as average_rating from ratingview group by book_id order by average_rating desc") // calcola per ogni id la media dei rating
-  // books.select("book_id", "authors").join(idavgrating, "book_id").show
-  //dautmeans.sqlContext.sql("select  _2, avg(_3) as avg from finalview group by _2 order by avg desc").limit(500).show(30)
-  //val uniqueAuthor = tmp.dropDuplicates
+object Main{
+
+  final private val JOB1 = "JOB1"
+  final private val JOB2 = "JOB2"
+
+  def main(args: Array[String]): Unit = {
+    if (args.length != 1 && args.length != 3){
+      println("USAGE: ./director-actor-job-2.1.2-spark.jar <JOB1 | JOB2>  [EXECUTORS TASKS]")
+      println("Found: " + args.length)
+    }else{
+      val sqlcontext = SparkSession.builder.master("local[*]").getOrCreate.sqlContext
+      if(args.length == 3) {
+        val conf = Configuration(args.toList)
+        if (args(0) == JOB1) {
+          MainJob1.apply.executeJob(conf, sqlcontext)
+        } else {
+          MainJob2.apply.executeJob(conf, sqlcontext)
+        }
+      }else{
+        if (args(0) == JOB1) {
+          MainJob1.apply.executeJob(Configuration(), sqlcontext)
+        } else {
+          MainJob2.apply.executeJob(Configuration(), sqlcontext)
+        }
+      }
+
+    }
+  }
+
 }
