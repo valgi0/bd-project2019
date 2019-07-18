@@ -107,7 +107,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 task mapReduceJar(type: ShadowJar) {
     classifier = 'mr'
-    manifest.attributes 'Main-Class': 'it.unibo.bd1819.Main'
+    manifest.attributes 'Main-Class': 'it.unibo.bd1819.raitingMedio.Main'
     from(shadowJar.from())
     zip64 true
 }
