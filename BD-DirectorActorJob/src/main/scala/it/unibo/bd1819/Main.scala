@@ -11,12 +11,12 @@ object Main{
   final private val JOB2 = "JOB2"
 
   def main(args: Array[String]): Unit = {
-    if (args.length != 1 && args.length != 3){
-      println("USAGE: ./director-actor-job-2.1.2-spark.jar <JOB1 | JOB2>  [EXECUTORS TASKS]")
+    if (args.length != 1 && args.length != 4){
+      println("USAGE: ./director-actor-job-2.1.2-spark.jar <JOB1 | JOB2>  [PARTITIONS PARALLELISM MEMORY]")
       println("Found: " + args.length)
     }else{
       val sqlcontext = SparkSession.builder.master("local[*]").getOrCreate.sqlContext
-      if(args.length == 3) {
+      if(args.length == 4) {
         val conf = Configuration(args.toList)
         if (args(0) == JOB1) {
           MainJob1.apply.executeJob(conf, sqlcontext)

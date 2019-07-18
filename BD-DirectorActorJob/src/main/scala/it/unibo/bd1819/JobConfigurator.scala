@@ -11,22 +11,27 @@ class JobConfigurator {
     sqlcontext = sqlc
   }
 
-  /**
-    * Set the number of partition to use
-    * @param executors Number of executors
-    * @param tasks Number of tasks per executor
-    */
-  def setPartitions(executors: Int, tasks : Int) = {
-    sqlcontext.setConf("spark.sql.shuffle.partitions", (executors*tasks).toString)
-  }
 
   /**
     * Set the number of parallelisms to use
-    * @param executors Number of executors
+    * @param executors Number of partitions
     * @param tasks Number of tasks per executor
     */
-  def setParallelism(executors: Int, tasks : Int) = {
-    sqlcontext.setConf("spark.default.parallelism", (executors*tasks).toString)
+  def setParallelism(parallelism: Int) = {
+    sqlcontext.setConf("spark.default.parallelism", (parallelism).toString)
+  }
+
+  /**
+    * Set the number of partitions
+    * @param partitions
+    */
+  def setPartitions(partitions: Int): Unit={
+    sqlcontext.setConf("spark.sql.shuffle.partitions", partitions.toString);
+  }
+
+
+  def setMemoryOffHeap(memory: Int): Unit = {
+    sqlcontext.setConf("spark.executor.memory", memory.toString + "g")
   }
 
   /**
@@ -51,16 +56,18 @@ object JobConfigurator{
   def apply(context: SQLContext, conf : Configuration): JobConfigurator = {
     val jc = new JobConfigurator()
     jc.setSqlContext(context)
-    jc.setPartitions(conf.executors, conf.tasksPerExecutor)
-    jc.setParallelism(conf.executors, conf.tasksPerExecutor)
+    jc.setPartitions(conf.partitions)
+    jc.setParallelism(conf.parallelism)
+    jc.setMemoryOffHeap(conf.memorySize)
     jc
   }
 
   def getDefault(context: SQLContext) : JobConfigurator = {
     val jc = new JobConfigurator()
     jc.setSqlContext(context)
-    jc.setParallelism(executors, taskForExceutor)
-    jc.setPartitions(executors, taskForExceutor)
+    jc.setParallelism(8)
+    jc.setPartitions(80)
+    jc.setMemoryOffHeap(11)
     jc
   }
 }

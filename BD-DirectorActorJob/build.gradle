@@ -25,7 +25,7 @@ targetCompatibility = 1.7
     provided
 }*/
 
-mainClassName = 'it.unibo.bd1819.ratingmedio.MainJob'
+mainClassName = 'it.unibo.bd1819.it.unibo.bd1819.job2.mainJob2'
 
 // this makes the scala classes builds alongside the java ones.
 sourceSets {
@@ -105,9 +105,16 @@ shadowJar {
 // Shadowing Test Sources and Dependencies
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
-task mapReduceJar(type: ShadowJar) {
-    classifier = 'mr'
-    manifest.attributes 'Main-Class': 'it.unibo.bd1819.ratingmedio.MainJob'
+task mapReduceJarJob2(type: ShadowJar) {
+    classifier = 'mr2'
+    manifest.attributes 'Main-Class': 'it.unibo.bd1819.job2.mainJob2'
+    from(shadowJar.from())
+    zip64 true
+}
+
+task mapReduceJarJob1(type: ShadowJar) {
+    classifier = 'mr1'
+    manifest.attributes 'Main-Class': 'it.unibo.bd1819.job2.mainJob2'
     from(shadowJar.from())
     zip64 true
 }

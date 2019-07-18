@@ -1,6 +1,6 @@
-package job2.mappers;
+package it.unibo.bd1819.job2.mappers;
 
-import job2.utils.FileParser;
+import it.unibo.bd1819.job2.utils.FileParser;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;

@@ -1,4 +1,4 @@
-package job2.reducers;
+package it.unibo.bd1819.job2.reducers;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
