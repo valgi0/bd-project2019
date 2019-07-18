@@ -18,8 +18,8 @@ class MainJob1{
 
   def executeJob(conf: Configuration, sqlc: SQLContext):Unit = {
 
-    // If users has not specified executors and tasks for each executors jobs use default
-    if(conf.executors == 0){
+    // If users has not specified partitions and tasks for each partitions jobs use default
+    if(conf.partitions == 0){
       sqlcontext = JobConfigurator.getDefault(sqlc).getSetSqlContext
     }else{
       sqlcontext = JobConfigurator(sqlc, conf).getSetSqlContext

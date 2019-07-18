@@ -2,8 +2,9 @@ package it.unibo.bd1819.job2
 
 class Configuration {
 
-  var executors : Int = 0
-  var tasksPerExecutor: Int = 0
+  var partitions : Int = 0
+  var parallelism: Int = 0
+  var memorySize : Int = 0
 
 }
 
@@ -12,17 +13,19 @@ class Configuration {
 object Configuration{
   def apply(args: List[String]): Configuration = {
     var c = new Configuration()
-    c.executors = args(1).toInt
-    c.tasksPerExecutor = args(2).toInt
+    c.partitions = args(1).toInt
+    c.parallelism = args(2).toInt
+    c.memorySize = args(3).toInt
     c
   }
 
   def apply(): Configuration = new Configuration()
 
-  def apply(exec : Int, task: Int): Configuration = {
+  def apply(partitions : Int, parallelism: Int, memory: Int): Configuration = {
     val c =new Configuration()
-    c.executors = exec
-    c.tasksPerExecutor = task
+    c.partitions = partitions
+    c.parallelism = parallelism
+    c.memorySize = memory
     c
   }
 }

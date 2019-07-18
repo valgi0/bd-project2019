@@ -22,7 +22,7 @@ class MainJob2 {
     val bookmarksForBoks = sqlcontext.sql("SELECT book_id, count(user_id) as marks FROM bookmarks "+
       "GROUP BY book_id ORDER BY marks DESC")
 
-    // now we hav to do the same with the rating
+    // now we have to do the same with the rating
     createTmpViewTable(ratingFD, "ratings")
     val ratingForeachBooks = sqlcontext.sql("SELECT book_id, AVG(rating) as avgRating FROM ratings" +
       " GROUP BY book_id ORDER BY avgRating DESC")
