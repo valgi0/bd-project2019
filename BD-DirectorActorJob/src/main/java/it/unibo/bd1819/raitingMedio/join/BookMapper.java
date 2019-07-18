@@ -1,21 +1,20 @@
-package it.unibo.bd1819.raitingmedio;
+package it.unibo.bd1819.raitingMedio.join;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.MapReduceBase;
-import org.apache.hadoop.mapred.Mapper;
 import org.apache.hadoop.mapred.OutputCollector;
 import org.apache.hadoop.mapred.Reporter;
+import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class BookMapper extends MapReduceBase
-implements Mapper<LongWritable, Text, Text, Text> {
+public class BookMapper extends Mapper<LongWritable, Text, Text, Text> {
+
 	public void map(LongWritable key, Text value,
-					OutputCollector<Text,Text> output, Reporter reporter)
-					throws IOException {
+					Context context)
+					throws IOException, InterruptedException {
 		String line = value.toString();
 		List<String> tmp = Arrays.asList(line.split("\""));
 		String newLine="";
@@ -29,7 +28,7 @@ implements Mapper<LongWritable, Text, Text, Text> {
 		}
 		String idLibro=newLine.split(",")[0];
 		String autori=newLine.split(",")[7];
-			output.collect(new Text(idLibro), new Text("1"+autori));
+			context.write(new Text(idLibro), new Text("1"+autori));
 
 	}
 }

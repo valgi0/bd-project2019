@@ -5,12 +5,16 @@ import it.unibo.bd1819.job2.mappers.CounterBMJobMapper;
 import it.unibo.bd1819.job2.mappers.CounterRatingMapper;
 import it.unibo.bd1819.job2.reducers.CounterBMJobReducer;
 import it.unibo.bd1819.job2.reducers.CounterRatingReducer;
+import it.unibo.bd1819.raitingMedio.join.BookMapper;
+import it.unibo.bd1819.raitingMedio.join.RaitingMapper;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.Job;
 
@@ -38,7 +42,7 @@ public class JobsFactory {
 
     private static final Configuration conf = new Configuration();
 
-    public static Job countBookmarksJob() throws IOException{
+   /* public static Job countBookmarksJob() throws IOException{
 
         FileSystem fs = FileSystem.get(conf);
         deleteOutputFolder(fs, pathToFiles.OUTJOB1.getPath());
@@ -63,7 +67,7 @@ public class JobsFactory {
 
         return counterBMJobs;
     }
-
+*/
     public static Job computeAVGRatingJob() throws IOException{
         FileSystem fs = FileSystem.get(conf);
         deleteOutputFolder(fs, pathToFiles.OUTJOB2.getPath());
@@ -73,18 +77,20 @@ public class JobsFactory {
         avgratingjobs.setJarByClass(mainJob2.class);
 
         //setting mapper and reducer
-        avgratingjobs.setMapperClass(CounterRatingMapper.class);
         avgratingjobs.setReducerClass(CounterRatingReducer.class);
 
         //Setting outputs
         avgratingjobs.setMapOutputKeyClass(Text.class);
-        avgratingjobs.setMapOutputValueClass(Text.class);
+        avgratingjobs.setMapOutputValueClass(IntWritable.class);
         avgratingjobs.setOutputKeyClass(Text.class);
-        avgratingjobs.setOutputValueClass(IntWritable.class);
+        avgratingjobs.setOutputValueClass(Text.class);
 
         // setting input output files
         FileOutputFormat.setOutputPath(avgratingjobs, pathToFiles.OUTJOB2.getPath());
-        FileInputFormat.addInputPath(avgratingjobs, pathToFiles.RATING.getPath());
+        MultipleInputs.addInputPath(avgratingjobs, pathToFiles.RATING.getPath(),
+                TextInputFormat.class, CounterRatingMapper.class);
+        MultipleInputs.addInputPath(avgratingjobs, pathToFiles.BOOKMARKS.getPath(),
+                TextInputFormat.class, CounterBMJobMapper.class);
 
         return avgratingjobs;
 

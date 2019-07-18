@@ -1,6 +1,7 @@
 package it.unibo.bd1819.job2.mappers;
 
 import it.unibo.bd1819.job2.utils.FileParser;
+import it.unibo.bd1819.job2.utils.Utility;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -27,7 +28,7 @@ public class CounterBMJobMapper extends Mapper<LongWritable, Text, Text, IntWrit
     ) throws IOException, InterruptedException {
         List<String> values = FileParser.parseCSVLine(value.toString());
         Text newKey = new Text(values.get(0)); // book_id
-        IntWritable newValue = new IntWritable(1);
+        IntWritable newValue = new IntWritable(Utility.IDENTIFIER);
         context.write(newKey, newValue);
     }
 }
