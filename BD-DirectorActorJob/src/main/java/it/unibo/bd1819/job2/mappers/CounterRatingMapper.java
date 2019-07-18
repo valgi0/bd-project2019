@@ -25,8 +25,9 @@ public class CounterRatingMapper extends Mapper<LongWritable, Text, Text, IntWri
 
         List<String> values = FileParser.parseCSVLine(value.toString());
         String idBook = values.get(1);
-        IntWritable rating = new IntWritable(Integer.parseInt(values.get(2)));
-
-        context.write(new Text(idBook), rating);
+            if (!values.get(2).equals("rating")) {
+                IntWritable rating = new IntWritable(Integer.parseInt(values.get(2)));
+                context.write(new Text(idBook), rating);
+            }
     }
 }

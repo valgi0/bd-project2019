@@ -1,8 +1,10 @@
 package it.unibo.bd1819.job2.utils;
 
 import it.unibo.bd1819.job2.mainJob2;
+import it.unibo.bd1819.job2.mappers.CountMapper;
 import it.unibo.bd1819.job2.mappers.CounterBMJobMapper;
 import it.unibo.bd1819.job2.mappers.CounterRatingMapper;
+import it.unibo.bd1819.job2.reducers.CountReducer;
 import it.unibo.bd1819.job2.reducers.CounterBMJobReducer;
 import it.unibo.bd1819.job2.reducers.CounterRatingReducer;
 import it.unibo.bd1819.raitingMedio.join.BookMapper;
@@ -17,6 +19,7 @@ import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
 import java.io.IOException;
 
@@ -85,6 +88,8 @@ public class JobsFactory {
         avgratingjobs.setOutputKeyClass(Text.class);
         avgratingjobs.setOutputValueClass(Text.class);
 
+
+        avgratingjobs.setOutputFormatClass(TextOutputFormat.class);
         // setting input output files
         FileOutputFormat.setOutputPath(avgratingjobs, pathToFiles.OUTJOB2.getPath());
         MultipleInputs.addInputPath(avgratingjobs, pathToFiles.RATING.getPath(),
@@ -93,6 +98,37 @@ public class JobsFactory {
                 TextInputFormat.class, CounterBMJobMapper.class);
 
         return avgratingjobs;
+
+    }
+
+
+
+    public static Job counterJob() throws IOException{
+        FileSystem fs = FileSystem.get(conf);
+        deleteOutputFolder(fs, pathToFiles.OUTJOB3.getPath());
+
+        // create jobs
+        Job job = Job.getInstance(conf, "classificator counter");
+        job.setJarByClass(mainJob2.class);
+
+        //setting mapper and reducer
+        job.setReducerClass(CountReducer.class);
+        job.setMapperClass(CountMapper.class);
+
+        //Setting outputs
+        job.setMapOutputKeyClass(Text.class);
+        job.setMapOutputValueClass(IntWritable.class);
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(Text.class);
+
+
+        job.setOutputFormatClass(TextOutputFormat.class);
+        // setting input output files
+        FileOutputFormat.setOutputPath(job, pathToFiles.OUTJOB3.getPath());
+        job.setInputFormatClass(TextInputFormat.class);
+        FileInputFormat.addInputPath(job,pathToFiles.OUTJOB2.getPath());
+
+        return job;
 
     }
 

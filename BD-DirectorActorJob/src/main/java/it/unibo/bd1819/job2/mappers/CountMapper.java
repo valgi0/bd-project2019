@@ -8,13 +8,11 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
-import java.util.List;
 
-public class CounterBMJobMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+public class CountMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 
     /**
-     * This function does a mapping. For each books in to_read table it creates a new Pair Key-value
-     * composed by book_id as a key and 1 as value.
+     * This mapper is used to create the list of each books in each groups
      *
      * It accepts a TextInputFormat
      *
@@ -26,9 +24,8 @@ public class CounterBMJobMapper extends Mapper<LongWritable, Text, Text, IntWrit
      */
     public void map(LongWritable key, Text value, Context context
     ) throws IOException, InterruptedException {
-        List<String> values = FileParser.parseCSVLine(value.toString());
-        Text newKey = new Text(values.get(1)); // book_id
-        IntWritable newValue = new IntWritable(Utility.IDENTIFIER);
+        Text newKey = new Text(value);
+        IntWritable newValue =new IntWritable(Utility.IDENTIFIER);
         context.write(newKey, newValue);
     }
 }

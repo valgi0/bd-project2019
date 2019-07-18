@@ -9,5 +9,6 @@ public class mainJob2 {
             throws IOException, ClassNotFoundException, InterruptedException {
         //JobsFactory.countBookmarksJob().waitForCompletion(true);
         JobsFactory.computeAVGRatingJob().waitForCompletion(true);
+        JobsFactory.counterJob().waitForCompletion(true);
     }
 }
