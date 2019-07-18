@@ -66,7 +66,7 @@ object JobConfigurator{
     val jc = new JobConfigurator()
     jc.setSqlContext(context)
     jc.setParallelism(8)
-    jc.setPartitions(80)
+    jc.setPartitions(8)
     jc.setMemoryOffHeap(11)
     jc
   }
