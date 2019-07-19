@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <profile name="Gradle 1" modules="director-actor-job_main,director-actor-job_test,GoodBooks-10k_main,GoodBooks-10k_test,GoodBooks-10k-Jobs_main,GoodBooks-10k-Jobs_test">
+    <profile name="Gradle 1" modules="GoodBooks-10k-Jobs.main,GoodBooks-10k-Jobs.test">
       <option name="deprecationWarnings" value="true" />
       <option name="uncheckedWarnings" value="true" />
       <parameters>
