@@ -50,7 +50,8 @@ class MainJob1{
     val idavgrating = sqlcontext.sql("select book_id, avg(rating) as average_rating from ratingView group by book_id order by average_rating desc") // calcola per ogni id la media dei rating
 
     //It's time to join the two tables Books and Rating
-    val jointables = booksDF.select("book_id", "authors").join(idavgrating, "book_id")
+    import org.apache.spark.sql.functions.broadcast
+    val jointables = booksDF.select("book_id", "authors").join(broadcast(idavgrating), "book_id")
     createTmpViewTable(jointables.toDF(), "finalview")
 
     // Everything is done. We have to order the entry according the rating and print the first 500 elements
