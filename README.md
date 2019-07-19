@@ -1,30 +1,40 @@
-# bd-project2019
-project for BigData course
 
-## Aim
+# Big-Data: GoodBooks-10k-Jobs
 
-The project shared with riccardo Soro is composed by two jobs both implemented using MapReduce hadoop model
-and Spark Sql
+`@ authors: ` Lorenzo Valgimigli  
+`@ authors: ` Riccardo Soro  
+`@ Course : ` Big Data  
+`@ Data   : ` 26/07/19
 
-## Data
 
-Dataset is about books and rating.
-It's compostd by 5 tables and contains 10k of books with more than 6milion of ratings
+## Target
+
+The dataset is a books collection with some information as: ratings, bookmarks etc etc ...  
+You find it at this github repository: 
+
+[Good books 10k repository](https://github.com/zygmuntz/goodbooks-10k "GoodBooks repository")
 
 ## Jobs
 
-Jobs are two:
+The jobs the team had to develop are:
 
-* 1.Find out which are the most rated authors (first 100 authors with most high rating)
-* 2.Comparing most bookmarked books with their rating
+1. Find out the best 500 authors. In order to do that we had to compute the average rating
+for each book and compute the average rating for each author.
 
-https://github.com/zygmuntz/goodbooks-10k
+2.  Find out a correlation between bookmarks and rating. Bookmark is the desire for a user
+to read a book. 
 
-1) restituire i 100 autori che hanno il rating medio piu alto
-1.1)considerare che il campo autore può avere più autori quindi bisognerà fare uno split.
-1.2) Non utilizzare il valore medio dei rating nella tabella Books.vcs ma calcolarlo dalla tabella rating
+Both are implemented using **Hadoop Map Reduce** and **Spark SQL**.
 
-2) Trovare una relazione tra libri che molti utenti vogliono leggere e rating dei libri.
-2.1) Trovare quanti utenti vogliono leggere ogni libro e stimare empiricamente quanto è tanto e quanto è poco (Soglia)
-2.2) mettere a confronto col raing dei libri (precalcolato) i vari bookmarks
-es libri che in molti vogliono leggere sono anche i piu alti ad esempio?
+## Deploy
+
+You can build the project using gradle or gradlew. In order to build jars you can use one of this tasks:
+
+1. `sparkJar` to build the Spark Sql code.
+2. `mapReduceJarJob1` to build the first job developed using Map Reduce
+3. `mapReduceJarJob2` to build the second job developed using Map Reduce
+
+
+
+
+
