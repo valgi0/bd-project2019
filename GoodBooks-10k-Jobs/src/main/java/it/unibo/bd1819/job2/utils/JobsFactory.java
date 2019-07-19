@@ -26,10 +26,8 @@ import java.io.IOException;
 public class JobsFactory {
 
     private enum pathToFiles{
-        BOOKS ("./bd-project2019-master/dataset/books.csv"),
         RATING ("./bd-project2019-master/dataset/ratings.csv"),
         BOOKMARKS ("./bd-project2019-master/dataset/to_read.csv"),
-        OUTJOB1 ("./bd-project2019-master/dataset/output/job1"),
         OUTJOB2 ("./bd-project2019-master/dataset/output/it.unibo.bd1819.job2"),
         OUTJOB3 ("./bd-project2019-master/dataset/output/job3");
 
@@ -45,32 +43,25 @@ public class JobsFactory {
 
     private static final Configuration conf = new Configuration();
 
-   /* public static Job countBookmarksJob() throws IOException{
 
-        FileSystem fs = FileSystem.get(conf);
-        deleteOutputFolder(fs, pathToFiles.OUTJOB1.getPath());
-
-        // create jobs
-        Job counterBMJobs = Job.getInstance(conf, "BookMarks counter for each books");
-        counterBMJobs.setJarByClass(mainJob2.class);
-
-        //setting mapper and reducer
-        counterBMJobs.setMapperClass(CounterBMJobMapper.class);
-        counterBMJobs.setReducerClass(CounterBMJobReducer.class);
-
-        //Setting outputs
-        counterBMJobs.setMapOutputKeyClass(Text.class);
-        counterBMJobs.setMapOutputValueClass(IntWritable.class);
-        counterBMJobs.setOutputKeyClass(Text.class);
-        counterBMJobs.setOutputValueClass(IntWritable.class);
-
-        // setting input output files
-        FileOutputFormat.setOutputPath(counterBMJobs, pathToFiles.OUTJOB1.getPath());
-        FileInputFormat.addInputPath(counterBMJobs, pathToFiles.BOOKMARKS.getPath());
-
-        return counterBMJobs;
-    }
-*/
+    /**
+     * This job is composed by two mapper and one reducer.
+     *  <li> Mapper 1: create a couple Key value where key is book_id and value the rating</li>
+     *  <li> Mapper 2: Create a couple Key Value where key is book_id and value a token rappresenting the Bookmarks</li>
+     *  <li> Reducer get the couple where key are book_id and value a list of element and check each element
+     *  if it is a number between rating range  Reducer use it to comput average rating. Otherwise, if it
+     *  is a token it uses it to compute how many bookmarks the book has</li>
+     *
+     * At the end of this job we get a list of groups.
+     *
+     *  Groups: The group are four fields where book is placed according to the number of bookmarks and rating:
+     *  <li>High Rating High Bookmarks</li>
+     *  <li>Low Rating Low Bookmarks </li>
+     *  <li>Low Rating High Bookmarks</li>
+     *  <li>High Rating Low Bookmarks</li>
+     * @return
+     * @throws IOException
+     */
     public static Job computeAVGRatingJob() throws IOException{
         FileSystem fs = FileSystem.get(conf);
         deleteOutputFolder(fs, pathToFiles.OUTJOB2.getPath());
@@ -102,7 +93,12 @@ public class JobsFactory {
     }
 
 
-
+    /**
+     * This jobs just read the output of the computeAVGRatingJob() and count how many books are in each fields
+     * At the end we get 4 tuples with Group_type, number_of_books
+     * @return
+     * @throws IOException
+     */
     public static Job counterJob() throws IOException{
         FileSystem fs = FileSystem.get(conf);
         deleteOutputFolder(fs, pathToFiles.OUTJOB3.getPath());
@@ -130,10 +126,6 @@ public class JobsFactory {
 
         return job;
 
-    }
-
-    public static Job countRatingJob () throws IOException{
-        return Job.getInstance(conf);
     }
 
     private static void deleteOutputFolder(final FileSystem fs, final Path folderToDelete) throws IOException {

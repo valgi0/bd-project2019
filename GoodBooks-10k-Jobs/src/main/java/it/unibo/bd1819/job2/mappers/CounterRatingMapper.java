@@ -12,7 +12,7 @@ import java.util.List;
 public class CounterRatingMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 
     /**
-     * This calss does a map from the line read in reating.csv and a pair
+     * This class does a mapping from the line read from reating.csv and a pair
      * id_book as key and rating as value
      * @param key offset
      * @param value csv line

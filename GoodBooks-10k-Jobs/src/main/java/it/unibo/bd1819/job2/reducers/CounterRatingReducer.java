@@ -13,7 +13,7 @@ public class CounterRatingReducer extends Reducer<Text, IntWritable, Text, Text>
     private Logger logger = Logger.getLogger(CounterRatingReducer.class);
 
     /**
-     * Reduce tasks that compute the average rating of each book
+     * Reduce tasks that compute the average rating of each book and the number of bookmarks
      *
      * @param key
      * @param values
@@ -27,15 +27,20 @@ public class CounterRatingReducer extends Reducer<Text, IntWritable, Text, Text>
         Integer countBM = 0;
         int countRating = 0;
         for (IntWritable r : values) {
+            // it checks if value is BOOKMARK token
             if (r.equals(new IntWritable(Utility.IDENTIFIER))) {
                 countBM++;
             } else {
+                // or it is a rating
                 rating += Double.parseDouble(r.toString());
                 countRating++;
             }
         }
         Double avg = 0.0;
+        // now compute the avg rating for the book
         if (countRating > 0) avg = rating / countRating;
+
+        // and now using bookmarks and rating chooses the group to put the book
         String group = "";
         if(avg < Utility.RATING_THRESHOLD && countBM < Utility.BM_THRESHOLD){
             group = Utility.LOWBMLOWRATING;
@@ -49,6 +54,8 @@ public class CounterRatingReducer extends Reducer<Text, IntWritable, Text, Text>
         if(avg < Utility.RATING_THRESHOLD && countBM >= Utility.BM_THRESHOLD){
             group = Utility.HIGHBMLOWRATING;
         }
+
+        // it saves just the group
         context.write( new Text(group), new Text(""));
     }
 }
