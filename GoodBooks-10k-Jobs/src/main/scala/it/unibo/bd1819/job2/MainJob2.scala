@@ -31,7 +31,9 @@ class MainJob2 {
     //createTmpViewTable(bookmarksForBoks.toDF(), "bookmarks_for_books")
     //createTmpViewTable(ratingForeachBooks.toDF(), "rating_for_books")
 
-    val joinedTable = bookmarksForBoks.join(ratingForeachBooks, "book_id").orderBy("avgRating")
+    // according to the spark sql reference we can use broadcast join if the table is smaller than 4G. And it is
+    import org.apache.spark.sql.functions.broadcast
+    val joinedTable = bookmarksForBoks.join(broadcast(ratingForeachBooks), "book_id").orderBy("avgRating")
 
     //select all upper case
     createTmpViewTable(joinedTable.toDF(), "joinedTable")
