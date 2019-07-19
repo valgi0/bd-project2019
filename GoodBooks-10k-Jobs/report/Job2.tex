@@ -1,0 +1,37 @@
+\section{Job2: Correlazione tra rating e bookmarks}
+
+L'obbiettivo di questo Job è quello di vedere se esiste una correlazione tra rating medio e bookmarks
+Quindi il cuore del Job è il calcolo del rating e dei bookmarks e fare un confronto incrociato.
+
+\subsection{Pianificazione}
+Le tabelle che entrano in gioco per questo job sono le seguenti:
+\begin{itemize}
+    \item \texttt{ratings.csv}
+    \item \texttt{to\_read.csv}
+\end{itemize}
+
+La prima verrà utilizzata per calcolare il rating medio mentre la seconda verrà utilizzata per calcolare i Bookmarks.
+Dopo di che i risultati ottenuti saranno uniti in una unica tabella e da li verranno calcolati i risultati.
+
+Ogni libro può quindi appartenere a uno dei 4 gruppi:
+\begin{itemize}
+    \item \textit{Molti Bookmarks e alto rating}
+    \item \textit{Molti Bookmarks e basso rating}
+    \item \textit{Pochi Bookmarks e basso rating}
+    \item \textit{Pochi Bookmarks e alto rating}
+\end{itemize}
+
+\subsection{Hadoop MapReduce}
+
+Per prima cosa bisogna definire i requisiti in un modello MapReduce.
+\begin{itemize}
+    \item \textbf{Rating medio}: %%todo breve descrizione di come implementare su mapreduce
+    \item \textbf{Conteggio BookMarks}: %%todo
+\end{itemize}
+
+\subsubsection{Implementazione}
+%% todo come è stato implementato quindi qunati mapper, quanti reducer, ziffatelle per farlo più veloce
+%% todo considerazioni sulle performance, quali sono i punti più costosi e come sono stati ottimizzati
+\subsection{SparkSQL}
+
+\subsection{Conclusioni}

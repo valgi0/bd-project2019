@@ -32,7 +32,6 @@ Riccardo Soro - Mar. }
 
 Il dataset scelto viene fornito dal negozio online di libri \href{https://www.goodreads.com/}{Good Reads} ed è
 reperibile sul repository github \href{https://github.com/zygmuntz/goodbooks-10k}{GoodBooks-10k}.
-
 All'interno possiamo trovare una serie di file \texttt{.csv} che contengono 10000 libri con vari attributi,
 oltre 6 milioni di ratings e qualche centinaia di bookmarks. Ma vediamo nel dettaglio:
 \begin{itemize}
@@ -49,22 +48,51 @@ oltre 6 milioni di ratings e qualche centinaia di bookmarks. Ma vediamo nel dett
     \end{itemize}
     \item \texttt{ratings.csv}: Contiene i rating fatti da tutti gli utenti. Le colonne di questa tabella sono:
     \begin{itemize}
-        \item \texttt{user_id}: ID dell'user che ha fatto la votazione
-        \item \texttt{book_id}: ID del libro nel dataset
+        \item \texttt{user\_id}: ID dell'user che ha fatto la votazione
+        \item \texttt{book\_id}: ID del libro nel dataset
         \item \texttt{rating}: Valore da 1 a 5 che rappresenta il rating dell'utente per quel libro
     \end{itemize}
-    \item \texttt{to_read.csv}: contiene i desideri degli utenti di leggere un libro. Questo desiderio è espresso con un \textit{bookmark}
+    \item \texttt{to\_read.csv}: contiene i desideri degli utenti di leggere un libro. Questo desiderio è espresso con un \textit{bookmark}
             la tabella è così composta:
     \begin{itemize}
-        \item \texttt{user_id}
-        \item \texttt{book_id}
+        \item \texttt{user\_id}
+        \item \texttt{book\_id}
     \end{itemize}
-    \item \texttt{book_tags.csv}: Questa tabella contiene per ogni libro i tags assegnatoli dagli utenti
-    \
-
+    \item \texttt{book\_tags.csv}: Questa tabella contiene per ogni libro i tags assegnatoli dagli utenti
+    \begin{itemize}
+        \item \texttt{goodreads\_book\_id}
+        \item \texttt{tag\_id}: ID del tag
+        \item \texttt{count}: Numero di utenti che hanno assegnato quel tag a quel libro
+    \end{itemize}
+    \item \texttt{tags.csv}: Tabella che salva l'associazione tra tag ID e il nome del tag
+    \begin{itemize}
+        \item \texttt{tag\_id}
+        \item \texttt{tag\_name}
+    \end{itemize}
 \end{itemize}
-\end{itemize}
 
+In totale il data set raggiunge circa 95 MB. Colleziona 10000 libri, 53424 utenti e
+oltre 6 milioni di rating.
+
+\section{Target}
+
+L'obbiettivo del progetto è quello di realizzare 2 jobs utilizzando sia \texttt{Hadoop MapReduce} che
+\texttt{Spark}. In quest'ultimo caso è stato scelto di utilizzare \texttt{Spark-Sql}. Di seguito
+vengono esposti i Jobs:
+    \begin{enumerate}
+        \item \textbf{Job1}: Trovare i 500 migliori autori nel dataset. Ovvero, trovare i 500 autori la cui media di punteggio
+            ottenuto nei loro libri è più alto. Per tanto sarà necessario calcolare per ogni libro il rating medio.
+            Poi sarà necessario associare i libri agli autori e calcolare la media del rating dei vari libri.
+        \item \textbf{Job2}:Trovare una correlazione tra numero di \textit{bookmarks} e \textit{rating medio} dei vari libri.
+        Sarà quindi necessario calcolare per ogni libro i bookmarks e il rating medio.
+    \end{enumerate}
+
+E' bene sottolineare che già dalla fase di analisi dei requisiti si evince un problema che dovrà essere gestito: il campo
+\texttt{author} in \texttt{books.csv} è composto da una lista di autori per tanto sarà necessario dividerli.
+Per sviluppare il progetto si è scelto di creare un progetto \texttt{gradle} usando \texttt{Java} per la parte di
+\texttt{Hadoop MapReduce} mentre si è scelto di utilizzare \texttt{Scala} per la parte di \texttt{SparkSQL}
+
+\input{Job2.tex}
 
 
 
