@@ -39,7 +39,6 @@ class MainJob2 {
     " avgRating >= " + rating_treshold + " AND marks >= " + bookmarks_treshold).count()
 
     // select all lower case
-
     val coutLessBMandLessRating = sqlcontext.sql("SELECT * FROM joinedTable WHERE" +
       " avgRating < " + rating_treshold + " AND marks <= " + bookmarks_treshold).count()
 

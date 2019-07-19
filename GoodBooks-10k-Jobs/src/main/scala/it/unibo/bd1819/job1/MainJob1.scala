@@ -8,10 +8,6 @@ import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructT
 
 class MainJob1{
 
-  val schema = StructType(Seq(
-    StructField("book_id", StringType),
-    StructField("Authors", StringType)
-  ))
   val encoder = Encoders.STRING
 
   var sqlcontext : SQLContext = _
@@ -39,7 +35,7 @@ class MainJob1{
     println("[DEBUG] tmp created. \n\tSchema: " + tmp.toDF().printSchema())
 
     // Let's create a new table
-    val view = createTmpViewTable(tmp.toDF(), "tmpTable")
+    createTmpViewTable(tmp.toDF(), "tmpTable")
 
     //booksDF.sqlContext.sql("select authors, count(book_id) from tabTMP group by authors").show  // raggruppa per ogni autore il numero di libri scritti
     //val authorBooks = sqlcontext.sql("select authors, count(book_id) from tabTable group by authors")
@@ -50,16 +46,16 @@ class MainJob1{
     // And we can create a new view
     createTmpViewTable(ratingDF, "ratingView")
 
-    //now we lauch a sql query to get books_id and its rating average
+    //now we launch a sql query to get books_id and its rating average
     val idavgrating = sqlcontext.sql("select book_id, avg(rating) as average_rating from ratingView group by book_id order by average_rating desc") // calcola per ogni id la media dei rating
 
+    //It's time to join the two tables Books and Rating
     val jointables = booksDF.select("book_id", "authors").join(idavgrating, "book_id")
-
     createTmpViewTable(jointables.toDF(), "finalview")
 
+    // Everything is done. We have to order the entry according the rating and print the first 500 elements
     val finalresult = sqlcontext.sql("select  authors, avg(average_rating) as avg from finalview group by authors order by avg desc").limit(500)
-
-    finalresult.show()
+    finalresult.show(500)
     //val uniqueAuthor = tmp.dropDuplicates
   }
 }

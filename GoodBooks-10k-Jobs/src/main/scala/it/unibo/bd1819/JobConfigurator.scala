@@ -14,8 +14,8 @@ class JobConfigurator {
 
   /**
     * Set the number of parallelisms to use
-    * @param executors Number of partitions
-    * @param tasks Number of tasks per executor
+    * @param parallelism Number of parallelism
+    *
     */
   def setParallelism(parallelism: Int) = {
     sqlcontext.setConf("spark.default.parallelism", (parallelism).toString)
@@ -30,6 +30,10 @@ class JobConfigurator {
   }
 
 
+  /**
+    * Set the memory size available
+    * @param memory
+    */
   def setMemoryOffHeap(memory: Int): Unit = {
     sqlcontext.setConf("spark.executor.memory", memory.toString + "g")
   }
