@@ -47,9 +47,9 @@ public class JobsFactory {
     /**
      * This job is composed by two mapper and one reducer.
      *  <li> Mapper 1: create a couple Key value where key is book_id and value the rating</li>
-     *  <li> Mapper 2: Create a couple Key Value where key is book_id and value a token rappresenting the Bookmarks</li>
+     *  <li> Mapper 2: Create a couple Key Value where key is book_id and value a token rapresenting the Bookmarks</li>
      *  <li> Reducer get the couple where key are book_id and value a list of element and check each element
-     *  if it is a number between rating range  Reducer use it to comput average rating. Otherwise, if it
+     *  if it is a number between rating range  Reducer use it to compute average rating. Otherwise, if it
      *  is a token it uses it to compute how many bookmarks the book has</li>
      *
      * At the end of this job we get a list of groups.
@@ -110,6 +110,7 @@ public class JobsFactory {
         //setting mapper and reducer
         job.setReducerClass(CountReducer.class);
         job.setMapperClass(CountMapper.class);
+        job.setNumReduceTasks(4);
 
         //Setting outputs
         job.setMapOutputKeyClass(Text.class);
