@@ -7,11 +7,16 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+/**
+ * questo job si occupa di caricare le tabelle rating.cvs e book.csv, di fare il join tra di loro e di creare un file di
+ * output con elenco di autori e raiting medio ricevuto (si avrà una coppia autore-punteggio per ogni autore di ogni libro).
+ * Il join viene fatto sull'ID del libro.
+ * Il job è composto da due Mapper e da un Reducer
+ */
 public class JoinJob {
     public static Job istance(final Configuration conf) throws Exception {
         FileSystem fs = FileSystem.get(conf);

@@ -1,24 +1,29 @@
 package it.unibo.bd1819.raitingMedio.filter;
 
 import org.apache.hadoop.io.FloatWritable;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.MapReduceBase;
-import org.apache.hadoop.mapred.OutputCollector;
-import org.apache.hadoop.mapred.Reporter;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
 
-
+/**
+ * Questo mapper riceve in input la coppia autore-rating e la passa in output
+ */
 public class FilterMapper extends Mapper<LongWritable, Text, Text, FloatWritable> {
-    public void map(LongWritable key, Text value,Context context)
+    /**
+     * @param key     linea del file
+     * @param value   autore e punteggio di uno dei libri scritti dall'autore, separati da tab
+     * @param context Context di hadoop
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public void map(LongWritable key, Text value, Context context)
             throws IOException, InterruptedException {
         String line = value.toString();
         String[] tmp = line.split("\t");
-        String autore=tmp[0];
-        String score=tmp[1];
-        context.write(new Text(autore),new FloatWritable(Float.parseFloat(score)));
+        String autore = tmp[0];
+        String score = tmp[1];
+        context.write(new Text(autore), new FloatWritable(Float.parseFloat(score)));
     }
 }
