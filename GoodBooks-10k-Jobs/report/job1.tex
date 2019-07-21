@@ -1,0 +1,68 @@
+\section{Job1: Best 500 Authors}
+
+In questo primo esercizio lo scopo consiste nel trovare i 500 autori che hanno le medie delle valutzioni più alte.
+I punteggi vanno da 1 a 5 e sono assegnati dagli utenti ai libri, mentre per ogni libro è presente la lista di autori che
+partecipato alla sua scrittura.
+
+\subsection{Pianificazione}
+Le tabelle che entrano in gioco per questo job sono le seguenti:
+\begin{itemize}
+    \item \texttt{ratings.csv}
+    \item \texttt{books.csv}
+\end{itemize}
+
+%% todo cosa servono le tabelle
+La tabella ratings è composta dall'id dell'utente, l'id del libro e dalla valutazione, quest'ultima varia da 1 a 5.
+La chiave primaria in questa tabella è la combinazione id_libro e id_utente e ci serve per calcolare la media delle
+valutazioni per ogni libro e, successivamente, calcolare la media del punteggio medio di ogni libro scritto da ogni attore.
+Per fare questa operazione si è resa necessaria la tabella books.csv, nella quale sono presenti gli autori che hanno
+partecipato alla scrittura dei libri.
+In questa seconda tabella sono presenti moltissimi attributi, ma gli unici che servono sono la coppia id_book
+(chiave primaria della tabella) e la lista di autori (separati da ;).
+
+%% todo: veloce ragionamento risolutivo del problema
+Per risolvere il problema occorre come prima cosa effettuare un join tra le due tabelle sull'attributo id_book, comune ad entrambe.
+Occorre inoltre calcolare la media delle recenzioni di ogni libro, per poi dare un punteggio ad ogni autore pari alla media delle
+valutazioni di tutti i libri sui quali ha lavorato.
+Una volta ottenuta una tabella con attributi autore - rating_medio manca solo la fase di sorting per ordinare i risultati.
+
+\subsection{Hadoop MapReduce}
+Per svolgere l'esercizio è stato necessario implementare più job, è stato possibile ridurne il numero fino a tre job distinti tra loro.
+Nello specifico il primo di questi si occupa di fare il join tra le due tabelle, il secondo svolge un operazione di raggruppamento e l'ultimo
+ordina correttamento e globalmente gli elementi.
+
+\begin{itemize}
+    \item \textbf{}: Fase di Join : Per questa fase è stato definito un job che esegua il join delle due tabelli sulla chiave
+    id_book. Questo job è composto da due Mapper e un Reducer, i mapper (uno a tabella) si occupa di leggere la tabella, escludere
+    gli attributi senza utilità e di creare come output una lista di coppie id_book - attributo.
+    Dalla tabella books.csv viene estrapolato l'attributo authors e dalla seconda il rating; il reducer si occupa invece
+    di raccogliere questi output, calcolare la media delle votazioni di ogni libro per poi produrre un output composto dalla
+    lista di coppie contenenti singolo_autore - rating_medio_per_singolo_libro. L'output perciò potrà contenere più volte lo stesso
+    autore, nello specifico ogni autore sarà presente tante volte quante sono le volte in cui appare come collaboratore nei libri.
+
+    \item \textbf{}: Fase di Filtering : Nella fase precedente si sono ottenuti in output risultati incompleti, con autori che si
+    ripetono e con valori di valutazione diversi. La fase di Filtering ha come obiettivo quello di ottenere un output
+    completo di tutte le informazioni richieste dall'esercizio senza avere però informazioni ridondanti o non necessarie.
+    L'implementazione di questa fase è composta da da un mapper e un reducer, il primo elabora l'output della fase precedente creando
+    in uscita una lista contenente autore - rating_medio_per_singolo_libro, la quale sarà ulteriormente elaborata dal reducer al fine di ottenere
+    per ogni autore la media delle medie dei libri da lui scritti.
+    Grazie a questa fase si ottiene in output tutti i valori necessari alla risoluzione dell'esercizio, ma essendo l'output suddiviso in più file
+    (uno a reducer) non possiamo in questa fase ottenere un output ordinato globalmente.
+
+    \item \textbf{}: Fase di Sorting : Nella fase precedente si sono ottenuti come output risultati disordinati globalmente.
+    Per risolvere un ploblema di sorting globale è stato utilizzato inizialmente un partitioner personalizzato, basato su soglie del rating_medio
+    che garantissero una distribuzione omogenea dei dati sul reducer garantendo l'ordinamento grazie appunto alle soglie prestabilite.
+    Questa implementazione però non poteva funzionare con un numero variabile di reducer, il numero di possibili soglie utilizzabili erano limitate;
+    è stato perciò deciso di utilizzare il TotaOrderPartitioner.
+    Questo metodo calcola in automatico le soglie partendo da un numero specificabile di recond, permettendo al job di poter essere eseguito su un numero qualsiasi
+    di reducer per non limitare la scalabilità della soluzione.
+    In uscita da questo job si ottiene quindi la lista degli autori e del loro rating_medio ordinati dal rating più alto a quello più basso.
+    
+
+
+
+    \end{itemize}
+
+\subsection{SparkSQL}
+
+\subsection{Conclusioni}
