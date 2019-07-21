@@ -1,0 +1,64 @@
+\section{Job2: Correlazione tra rating e bookmarks}
+
+L'obbiettivo di questo Job è quello di vedere se esiste una correlazione tra rating medio e bookmarks
+Quindi il cuore del Job è il calcolo del rating e dei bookmarks e fare un confronto incrociato.
+
+\subsection{Pianificazione}
+Le tabelle che entrano in gioco per questo job sono le seguenti:
+\begin{itemize}
+    \item \texttt{ratings.csv}
+    \item \texttt{to\_read.csv}
+\end{itemize}
+
+La prima verrà utilizzata per calcolare il rating medio mentre la seconda verrà utilizzata per calcolare i Bookmarks.
+Dopo di che i risultati ottenuti saranno uniti in una unica tabella e da li verranno calcolati i risultati.
+
+Ogni libro può quindi appartenere a uno dei 4 gruppi:
+\begin{itemize}
+    \item \textit{Molti Bookmarks e alto rating}
+    \item \textit{Molti Bookmarks e basso rating}
+    \item \textit{Pochi Bookmarks e basso rating}
+    \item \textit{Pochi Bookmarks e alto rating}
+\end{itemize}
+
+\subsection{Hadoop MapReduce}
+
+Per prima cosa bisogna definire i requisiti in un modello MapReduce.
+\begin{itemize}
+    \item \textbf{Rating medio}: %%todo breve descrizione di come implementare su mapreduce
+    \item \textbf{Conteggio BookMarks}: %%todo
+\end{itemize}
+
+\subsubsection{Implementazione}
+%% todo come è stato implementato quindi qunati mapper, quanti reducer, ziffatelle per farlo più veloce
+%% todo considerazioni sulle performance, quali sono i punti più costosi e come sono stati ottimizzati
+\subsection{SparkSQL}
+Per questo problema si \è utilizzato a pieno SparkSQL affidandoci alle ottimizzazioni interne del framework. Il problema
+\è stato affrontato tramite i seguenti step:
+\begin{itemize}
+    \item \texttt{Creazione DataFrame}. Come primo passo abbiamo sfruttato una feature di \texttt{spark2} per leggere
+    i dati dal file .csv inferendo direttamente lo schema della tabella. Una volta letto il file viene automaticamente creato
+    un oggetto DataFrame pronto all'uso.
+    \item \texttt{Rating medio}. Per calcolare il rating medio non abbiamo bisogno di fare Join con altre tabelle ma ci basta utilizzare
+    ratings. E' stata quindi utilizzata la seguente query per calcolare il rating:
+    \begin{verbatim}
+    SELECT book_id, AVG(rating) as avgRating FROM ratings
+    GROUP BY book_id
+    \end{verbatim}
+    \item \texttt{Bookmarks}. Anche per calcolare i bookmarks bancia lanciare una query su una sola tabella:
+    \begin{verbatim}
+        SELECT book_id, count(user_id) as marks FROM bookmarks
+        GROUP BY book_id
+    \end{verbatim}
+    \item \texttt{Join tra i risultati}. Ora bisogna unire i due risultati in una unica tabella. Per il join essendo le
+    tabelle abbastanza piccole è stato usato un \texttt{broadcast join} sulla tabella con i rating.
+    \item \texttt{Risultati}. Ora abbiamo una tabella con tutte le informazioni che ci servono.
+    Ci basterà lanciare qualche query che filtra i risultati per rating e bookmarks e vedere quanti elementi sono in
+    ogni gruppo.
+\end{itemize}
+\subsection{Conclusioni}
+
+Realizzare questo task in SparkSQL è stato estremamente semplice sià per la semplicità in se del task sia per l'interfacca
+intuitiva di SparkSQL. Il risultato finale viene calcolato in tempo abbastanza buoni grazie alle ottimizzazioni interne del framework e
+al setup generale. \href{ } %%todo set up spark sql
+

@@ -20,12 +20,12 @@ class MainJob2 {
     //Now we have to count foreach books how many bookmarks are registered
     createTmpViewTable(bookMarksFD, "bookmarks")
     val bookmarksForBoks = sqlcontext.sql("SELECT book_id, count(user_id) as marks FROM bookmarks "+
-      "GROUP BY book_id ORDER BY marks DESC")
+      "GROUP BY book_id")
 
     // now we have to do the same with the rating
     createTmpViewTable(ratingFD, "ratings")
     val ratingForeachBooks = sqlcontext.sql("SELECT book_id, AVG(rating) as avgRating FROM ratings" +
-      " GROUP BY book_id ORDER BY avgRating DESC")
+      " GROUP BY book_id")
 
     // now we have to merge the two tables
     //createTmpViewTable(bookmarksForBoks.toDF(), "bookmarks_for_books")
