@@ -1,9 +1,9 @@
-\section{Job2: Correlazione tra rating e bookmarks}
+\subsection{Job2: Correlazione tra rating e bookmarks}
 
 L'obbiettivo di questo Job è quello di vedere se esiste una correlazione tra rating medio e bookmarks
 Quindi il cuore del Job è il calcolo del rating e dei bookmarks e fare un confronto incrociato.
 
-\subsection{Pianificazione}
+\subsubsection{Pianificazione}
 Le tabelle che entrano in gioco per questo job sono le seguenti:
 \begin{itemize}
     \item \texttt{ratings.csv}
@@ -21,7 +21,7 @@ Ogni libro può quindi appartenere a uno dei 4 gruppi:
     \item \textit{Pochi Bookmarks e alto rating}
 \end{itemize}
 
-\subsection{Hadoop MapReduce}
+\subsubsection{Hadoop MapReduce}
 
 Per prima cosa bisogna definire i requisiti in un modello MapReduce.
 \begin{itemize}
@@ -32,7 +32,17 @@ Per prima cosa bisogna definire i requisiti in un modello MapReduce.
 \subsubsection{Implementazione}
 %% todo come è stato implementato quindi qunati mapper, quanti reducer, ziffatelle per farlo più veloce
 %% todo considerazioni sulle performance, quali sono i punti più costosi e come sono stati ottimizzati
-\subsection{SparkSQL}
+\subsubsection{SparkSQL}
+
+\subsubsection{SetUp SparkSql}
+Per ottimizzare le performance di SparkSQL sul nodo del cluster sono stati settati i seguenti parametri:
+\begin{itemize}
+    \item \texttt{spark.default.parallelism} = 8
+    \item \texttt{spark.sql.shuffle.partitions} = 8
+    \item \texttt{spark.executor.memory} = 11g
+\end{itemize}
+
+\subsubsection{Implementazione sparksql}
 Per questo problema si \è utilizzato a pieno SparkSQL affidandoci alle ottimizzazioni interne del framework. Il problema
 \è stato affrontato tramite i seguenti step:
 \begin{itemize}
@@ -56,9 +66,15 @@ Per questo problema si \è utilizzato a pieno SparkSQL affidandoci alle ottimizz
     Ci basterà lanciare qualche query che filtra i risultati per rating e bookmarks e vedere quanti elementi sono in
     ogni gruppo.
 \end{itemize}
-\subsection{Conclusioni}
 
-Realizzare questo task in SparkSQL è stato estremamente semplice sià per la semplicità in se del task sia per l'interfacca
-intuitiva di SparkSQL. Il risultato finale viene calcolato in tempo abbastanza buoni grazie alle ottimizzazioni interne del framework e
-al setup generale. \href{ } %%todo set up spark sql
+Per lanciare il job bisognerà andare nella cartella \texttt{/home/lvalgimigli/exam/sparksql} e lanciare il jar con il seguente comando:
+\begin{verbatim}
+    spark2-submit GoodBooks-10k-Jobs-2.1.2-spark.jar JOB2
+\end{verbatim}
+
+\subsubsection{Conclusioni}
+
+Realizzare questo task in SparkSQL è stato estremamente semplice sià per la semplicità in se del task sia per l'interfaccia
+intuitiva di SparkSQL. Il risultato finale viene calcolato in tempi abbastanza buoni grazie alle ottimizzazioni interne del framework e
+al setup generale.
 

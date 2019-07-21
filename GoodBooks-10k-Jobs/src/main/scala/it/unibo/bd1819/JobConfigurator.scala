@@ -48,8 +48,6 @@ class JobConfigurator {
 
 
 object JobConfigurator{
-  var executors = 2
-  var taskForExceutor = 4
 
   def apply(context: SQLContext) : JobConfigurator = {
     val jc = new JobConfigurator()

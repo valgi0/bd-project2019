@@ -50,18 +50,18 @@ package object bd1819 {
     * Return the path to books.csv file
     * @return
     */
-  def pathToBooks = "./bd-project2019-master/dataset/books.csv"
+  def pathToBooks = "./exam/dataset/books.csv"
 
   /**
     * Return the path to ratings.csv file
     * @return
     */
-  def pathToRating = "./bd-project2019-master/dataset/ratings.csv"
+  def pathToRating = "./exam/dataset/ratings.csv"
 
   /**
     * Return the path to to_read.csv file
     * @return
     */
-  def pathToBookmarks = "./bd-project2019-master/dataset/to_read.csv"
+  def pathToBookmarks = "./exam/dataset/to_read.csv"
 
 }

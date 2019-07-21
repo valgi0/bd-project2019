@@ -1,68 +1,110 @@
-\section{Job1: Best 500 Authors}
+\subsection{Job1: Best 500 Authors}
 
 In questo primo esercizio lo scopo consiste nel trovare i 500 autori che hanno le medie delle valutzioni più alte.
 I punteggi vanno da 1 a 5 e sono assegnati dagli utenti ai libri, mentre per ogni libro è presente la lista di autori che
 partecipato alla sua scrittura.
 
-\subsection{Pianificazione}
+\subsubsection{Pianificazione}
 Le tabelle che entrano in gioco per questo job sono le seguenti:
 \begin{itemize}
     \item \texttt{ratings.csv}
     \item \texttt{books.csv}
 \end{itemize}
 
-%% todo cosa servono le tabelle
 La tabella ratings è composta dall'id dell'utente, l'id del libro e dalla valutazione, quest'ultima varia da 1 a 5.
-La chiave primaria in questa tabella è la combinazione id_libro e id_utente e ci serve per calcolare la media delle
+La chiave primaria in questa tabella è la combinazione id\_libro e id\_utente e ci serve per calcolare la media delle
 valutazioni per ogni libro e, successivamente, calcolare la media del punteggio medio di ogni libro scritto da ogni attore.
 Per fare questa operazione si è resa necessaria la tabella books.csv, nella quale sono presenti gli autori che hanno
 partecipato alla scrittura dei libri.
-In questa seconda tabella sono presenti moltissimi attributi, ma gli unici che servono sono la coppia id_book
+In questa seconda tabella sono presenti moltissimi attributi, ma gli unici che servono sono la coppia id\_book
 (chiave primaria della tabella) e la lista di autori (separati da ;).
 
-%% todo: veloce ragionamento risolutivo del problema
-Per risolvere il problema occorre come prima cosa effettuare un join tra le due tabelle sull'attributo id_book, comune ad entrambe.
+Per risolvere il problema occorre come prima cosa effettuare un join tra le due tabelle sull'attributo id\_book, comune ad entrambe.
 Occorre inoltre calcolare la media delle recenzioni di ogni libro, per poi dare un punteggio ad ogni autore pari alla media delle
 valutazioni di tutti i libri sui quali ha lavorato.
-Una volta ottenuta una tabella con attributi autore - rating_medio manca solo la fase di sorting per ordinare i risultati.
+Una volta ottenuta una tabella con attributi autore - rating\_medio manca solo la fase di sorting per ordinare i risultati.
 
-\subsection{Hadoop MapReduce}
+\subsubsection{Hadoop MapReduce}
 Per svolgere l'esercizio è stato necessario implementare più job, è stato possibile ridurne il numero fino a tre job distinti tra loro.
 Nello specifico il primo di questi si occupa di fare il join tra le due tabelle, il secondo svolge un operazione di raggruppamento e l'ultimo
 ordina correttamento e globalmente gli elementi.
 
-\begin{itemize}
-    \item \textbf{}: Fase di Join : Per questa fase è stato definito un job che esegua il join delle due tabelli sulla chiave
-    id_book. Questo job è composto da due Mapper e un Reducer, i mapper (uno a tabella) si occupa di leggere la tabella, escludere
-    gli attributi senza utilità e di creare come output una lista di coppie id_book - attributo.
+\begin{itemize} %%todo aggiungi il nome dei file (mapper e reducer) quando parli di loro
+    \item \textbf{ Fase di Join }: Per questa fase è stato definito un job che esegua il join delle due tabelli sulla chiave
+    id\_book. Questo job è composto da due Mapper e un Reducer, i mapper (uno a tabella) si occupa di leggere la tabella, escludere
+    gli attributi senza utilità e di creare come output una lista di coppie id\_book - attributo.
     Dalla tabella books.csv viene estrapolato l'attributo authors e dalla seconda il rating; il reducer si occupa invece
     di raccogliere questi output, calcolare la media delle votazioni di ogni libro per poi produrre un output composto dalla
-    lista di coppie contenenti singolo_autore - rating_medio_per_singolo_libro. L'output perciò potrà contenere più volte lo stesso
+    lista di coppie contenenti singolo\_autore - rating\_medio\_per\_singolo\_libro. L'output perciò potrà contenere più volte lo stesso
     autore, nello specifico ogni autore sarà presente tante volte quante sono le volte in cui appare come collaboratore nei libri.
 
-    \item \textbf{}: Fase di Filtering : Nella fase precedente si sono ottenuti in output risultati incompleti, con autori che si
+    \item \textbf{Fase di Filtering } : Nella fase precedente si sono ottenuti in output risultati incompleti, con autori che si
     ripetono e con valori di valutazione diversi. La fase di Filtering ha come obiettivo quello di ottenere un output
     completo di tutte le informazioni richieste dall'esercizio senza avere però informazioni ridondanti o non necessarie.
     L'implementazione di questa fase è composta da da un mapper e un reducer, il primo elabora l'output della fase precedente creando
-    in uscita una lista contenente autore - rating_medio_per_singolo_libro, la quale sarà ulteriormente elaborata dal reducer al fine di ottenere
+    in uscita una lista contenente autore - rating\_medio\_per\_singolo\_libro, la quale sarà ulteriormente elaborata dal reducer al fine di ottenere
     per ogni autore la media delle medie dei libri da lui scritti.
     Grazie a questa fase si ottiene in output tutti i valori necessari alla risoluzione dell'esercizio, ma essendo l'output suddiviso in più file
     (uno a reducer) non possiamo in questa fase ottenere un output ordinato globalmente.
 
-    \item \textbf{}: Fase di Sorting : Nella fase precedente si sono ottenuti come output risultati disordinati globalmente.
-    Per risolvere un ploblema di sorting globale è stato utilizzato inizialmente un partitioner personalizzato, basato su soglie del rating_medio
+    \item \textbf{Fase di Sorting} : Nella fase precedente si sono ottenuti come output risultati disordinati globalmente.
+    Per risolvere un ploblema di sorting globale è stato utilizzato inizialmente un partitioner personalizzato, basato su soglie del rating\_medio
     che garantissero una distribuzione omogenea dei dati sul reducer garantendo l'ordinamento grazie appunto alle soglie prestabilite.
     Questa implementazione però non poteva funzionare con un numero variabile di reducer, il numero di possibili soglie utilizzabili erano limitate;
     è stato perciò deciso di utilizzare il TotaOrderPartitioner.
     Questo metodo calcola in automatico le soglie partendo da un numero specificabile di recond, permettendo al job di poter essere eseguito su un numero qualsiasi
     di reducer per non limitare la scalabilità della soluzione.
-    In uscita da questo job si ottiene quindi la lista degli autori e del loro rating_medio ordinati dal rating più alto a quello più basso.
-    
-
-
-
+    In uscita da questo job si ottiene quindi la lista degli autori e del loro rating\_medio ordinati dal rating più alto a quello più basso.
     \end{itemize}
 
-\subsection{SparkSQL}
+\subsubsection{SparkSQL}
 
-\subsection{Conclusioni}
+\subsubsection{SetUp SparkSql}
+Per ottimizzare le performance di SparkSQL sul nodo del cluster sono stati settati i seguenti parametri:
+\begin{itemize}
+    \item \texttt{spark.default.parallelism} = 8
+    \item \texttt{spark.sql.shuffle.partitions} = 8
+    \item \texttt{spark.executor.memory} = 11g
+\end{itemize}
+
+\subsubsection{Implementazione sparksql}
+
+Il Job è stato realizzando utilizzando a pieno SparkSQL affidandoci alle ottimizzazioni interne del framework. La risoluzione è contenuta nel file \texttt{it.unibo.bd1819.job2.MainJob2}. Il problema
+\è stato affrontato tramite i seguenti step:
+
+
+\begin{itemize}
+    \item \texttt{Creazione DataFrame}. Come primo passo abbiamo sfruttato una feature di \texttt{spark2} per leggere
+    i dati dal file .csv inferendo direttamente lo schema della tabella. Una volta letto il file viene automaticamente creato
+    un oggetto DataFrame pronto all'uso.
+    \item \texttt{Split degli autori}: In questa fase volevamo che una tupla con il campo autori contenente una lista di autori diventasse
+    un insieme di tuple con il campo autore contenente un singolo autore. Per fare questo, dopo aver caricato il file .csv nel DataFrame
+    abbmiamo creato una funzione di \texttt{split} (SplitAuthors nel Package Object \textbf{bd1819}). Poi nel file MainJob2 abbiamo utilizzato una funzione di
+    flatMap in cui gli abbiamo specificato la funzione di split precedentemente creata.
+    \item  \texttt{Rating medio}. Per calcolare il rating medio non abbiamo bisogno di fare Join con altre tabelle ma ci basta utilizzare
+    ratings. E' stata quindi utilizzata la seguente query per calcolare il rating:
+    \begin{verbatim}
+        SELECT book_id, AVG(rating) as avgRating FROM ratings
+        GROUP BY book_id
+    \end{verbatim}
+    \item \texttt{Join}: E' quindi necessario fare il Join tra le tabelle books.csv e quella calcolata nel passo precedente. Entrambe sono relativamente piccole
+    per cui si è scelto di utlizzare esplicitamente il metodo Broadcast Join usando come tabella Broadcast \texttt{books.csv} selezionando solo i campi necessari.
+    \item \texttt{Media ratings dei vari autori}: Una volta effettuato il Join sarà necessario calcolare la media dei rating di ogni libro per ogni autore. Per fare ciò
+    è stata utilizzata la seguente Query:
+    \begin{verbatim}
+        SELECT  authors, avg(average_rating) as avg FROM finalview
+        GROUP BY authors ORDER BY avg desc
+    \end{verbatim}
+    \item \texttt{Visualizzazione dei risultati}: Una volta calcolati tutti i valori necessari la tabella risulta essere già ordinata quindi per ottenere il risultato finale
+    basterà stampare le prime 500 righe.
+\end{itemize}
+
+Per lanciare il job bisognerà andare nella cartella \texttt{/home/lvalgimigli/exam/sparksql} e lanciare il jar con il seguente comando:
+\begin{verbatim}
+    spark2-submit GoodBooks-10k-Jobs-2.1.2-spark.jar JOB1
+\end{verbatim}
+
+
+\subsubsection{Conclusioni}
+Realizzare questo job in sparksql è risultato essere più semplice è più performante rispetto Hadoop. Combinando la potenza semantica di scala e
+la semplicità di sparksql si è riuscito con poce linee di codice a risolvere problemi complessi come lo splitting degli autori.

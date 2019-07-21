@@ -27,17 +27,20 @@ Riccardo Soro - Mar. }
 
 \newpage
 
-\section{Data Preparation}
-
-Il dataset per l'esame si trova sià nel nodo \texttt{vclust9} nella home di \texttt{lvalgimigli} %%todo add soro
-all'indirizzo \texttt{lvalgimigli@isi-vclust9.csr.unibo.it:./exam/dataset/}
+\section{Introduzione}
+\subsection{Descrizione Dataset}
 
 Il dataset scelto viene fornito dal negozio online di libri \href{https://www.goodreads.com/}{Good Reads} ed è
 reperibile sul repository github \href{https://github.com/zygmuntz/goodbooks-10k}{GoodBooks-10k}.
 All'interno possiamo trovare una serie di file \texttt{.csv} che contengono 10000 libri con vari attributi,
-oltre 6 milioni di ratings e qualche centinaia di bookmarks. Ma vediamo nel dettaglio:
+oltre 6 milioni di ratings e qualche centinaia di bookmarks.
+In totale il data set raggiunge circa 95 MB. Colleziona 10000 libri, 53424 utenti e
+oltre 6 milioni di rating.
+
+\subsubsection{Descrizione File}
+Il dataset è composto dai seguenti file:
 \begin{itemize}
-    \item \texttt{books.csv}: Contiene metadati dei vari libri come:
+    \item \texttt{books.csv}: [lvalgimigli@isi-vclust9.csr.unibo.it:./exam/dataset/books.csv] Contiene metadati dei vari libri come:
     \begin{itemize}
         \item \texttt{book\_id}: ID del libro nel dataset
         \item \texttt{goodreads\_book\_id}: ID del libro nel Data Store del negozio
@@ -48,35 +51,43 @@ oltre 6 milioni di ratings e qualche centinaia di bookmarks. Ma vediamo nel dett
         \item \texttt{isbn13}
         \item \texttt{authors}: Lista di autori separati da una virgola
     \end{itemize}
-    \item \texttt{ratings.csv}: Contiene i rating fatti da tutti gli utenti. Le colonne di questa tabella sono:
+    \item \texttt{ratings.csv}: [lvalgimigli@isi-vclust9.csr.unibo.it:./exam/dataset/ratings.csv] Contiene i rating fatti da tutti gli utenti. Le colonne di questa tabella sono:
     \begin{itemize}
         \item \texttt{user\_id}: ID dell'user che ha fatto la votazione
         \item \texttt{book\_id}: ID del libro nel dataset
         \item \texttt{rating}: Valore da 1 a 5 che rappresenta il rating dell'utente per quel libro
     \end{itemize}
-    \item \texttt{to\_read.csv}: contiene i desideri degli utenti di leggere un libro. Questo desiderio è espresso con un \textit{bookmark}
+    \item \texttt{to\_read.csv}: [lvalgimigli@isi-vclust9.csr.unibo.it:./exam/dataset/to_read.csv] contiene i desideri degli utenti di leggere un libro. Questo desiderio è espresso con un \textit{bookmark}
             la tabella è così composta:
     \begin{itemize}
         \item \texttt{user\_id}
         \item \texttt{book\_id}
     \end{itemize}
-    \item \texttt{book\_tags.csv}: Questa tabella contiene per ogni libro i tags assegnatoli dagli utenti
+    \item \texttt{book\_tags.csv}: [lvalgimigli@isi-vclust9.csr.unibo.it:./exam/dataset/book\_tags.csv] Questa tabella contiene per ogni libro i tags assegnatoli dagli utenti
     \begin{itemize}
         \item \texttt{goodreads\_book\_id}
         \item \texttt{tag\_id}: ID del tag
         \item \texttt{count}: Numero di utenti che hanno assegnato quel tag a quel libro
     \end{itemize}
-    \item \texttt{tags.csv}: Tabella che salva l'associazione tra tag ID e il nome del tag
+    \item \texttt{tags.csv}: [lvalgimigli@isi-vclust9.csr.unibo.it:./exam/dataset/tags.csv] Tabella che salva l'associazione tra tag ID e il nome del tag
     \begin{itemize}
         \item \texttt{tag\_id}
         \item \texttt{tag\_name}
     \end{itemize}
 \end{itemize}
 
-In totale il data set raggiunge circa 95 MB. Colleziona 10000 libri, 53424 utenti e
-oltre 6 milioni di rating.
 
-\section{Target}
+
+\section{Preparazione dei dati}
+
+Il dataset per l'esame si trova sià nel nodo \texttt{vclust9} nella home di \texttt{lvalgimigli} %%todo add soro
+all'indirizzo \texttt{isi-vclust9.csr.unibo.it//home/lvalgimigli/exam/dataset/}
+I dati venivano indicati dal sito come completi e puliti per tanto non è stata necessarie una ulteriore fase di
+pulizia dati. E' stato solo sufficente dedicare del tempo ad capire il dominio e il significato degli attributi
+delle varie tabelle.
+
+
+\section{Jobs}
 
 L'obbiettivo del progetto è quello di realizzare 2 jobs utilizzando sia \texttt{Hadoop MapReduce} che
 \texttt{Spark}. In quest'ultimo caso è stato scelto di utilizzare \texttt{Spark-Sql}. Di seguito
