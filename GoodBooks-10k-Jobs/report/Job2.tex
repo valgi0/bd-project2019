@@ -30,7 +30,7 @@ Il problema si può dividere in quattro fasi:
 \begin{itemize}
     \item \textbf{Calcolare il rating} In questa fase bisogna leggere la tabella rating, eliminare gli attributi non necessari
     e calcolare la media delle valutazioni per ogni libro.
-    \item \textbf{Calcolare i bookmarks} In questa fase bisogna leggere la tabella to_read, eliminare gli attributi non necessari
+    \item \textbf{Calcolare i bookmarks} In questa fase bisogna leggere la tabella to\_read, eliminare gli attributi non necessari
     e calcolare la somma del numero degli utenti che desiderano leggere il libro,tutto questo per ogni libro.
     \item \textbf{Classificare per rating} In questa fase si classificano i libri comparando il rating calcolato
     precedentemente con la soglia ricavata empiricamente.
@@ -53,25 +53,13 @@ mentre l'ultima è stata implmentata in counterJob.
 \end{itemize}
 
 \subsubsection{Implementazione}
-<<<<<<< HEAD
 %% todo come è stato implementato quindi qunati mapper, quanti reducer, ziffatelle per farlo più veloce
 %% todo considerazioni sulle performance, quali sono i punti più costosi e come sono stati ottimizzati
-\subsubsection{SparkSQL}
 
-\subsubsection{SetUp SparkSql}
-Per ottimizzare le performance di SparkSQL sul nodo del cluster sono stati settati i seguenti parametri:
-\begin{itemize}
-    \item \texttt{spark.default.parallelism} = 8
-    \item \texttt{spark.sql.shuffle.partitions} = 8
-    \item \texttt{spark.executor.memory} = 11g
-\end{itemize}
-
-\subsubsection{Implementazione sparksql}
-=======
 Per implementare il primo job si è reso necessario lo sviluppo di due mapper, uno per ogni tabella.
 Entrambi i mapper leggono dal file gli attributi rilevanti escludendo quelli non necessari al completamento dell'esercizio.
-Nello specifico il mapper relativo alla tabella rating.csv crea come output una lista di book_id - rating per ogni libro, mentre l'altro
-produce una lista di book_id per ogni volta che quel libro è presente nella lista dei libri da leggere di un utente.
+Nello specifico il mapper relativo alla tabella rating.csv crea come output una lista di book\_id - rating per ogni libro, mentre l'altro
+produce una lista di book\_id per ogni volta che quel libro è presente nella lista dei libri da leggere di un utente.
 Il reducer che è incaricato della gestione dell'output di questi due mapper è CounterRatingReducer, il quale si occupa anche della classificazione dei
 libri creando un output contenente la classe di appartenenza di ogni libro.
 
@@ -83,8 +71,17 @@ Il mapper infatti può produrre al massimo quattro tipi diversi di chiave, di co
 creerà al massimo quattro risultati diversi, limitando di fatto il numero di reducer che si possono sfruttare.
 
 
-\subsection{SparkSQL}
->>>>>>> efa542a28f1f45e1c383da2e842d68d3c3cc3e1f
+\subsubsection{SparkSQL}
+
+\subsubsection{SetUp SparkSql}
+Per ottimizzare le performance di SparkSQL sul nodo del cluster sono stati settati i seguenti parametri:
+\begin{itemize}
+    \item \texttt{spark.default.parallelism} = 8
+    \item \texttt{spark.sql.shuffle.partitions} = 8
+    \item \texttt{spark.executor.memory} = 11g
+\end{itemize}
+
+\subsubsection{Implementazione sparksql}
 Per questo problema si \è utilizzato a pieno SparkSQL affidandoci alle ottimizzazioni interne del framework. Il problema
 \è stato affrontato tramite i seguenti step:
 \begin{itemize}
