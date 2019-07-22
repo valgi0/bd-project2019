@@ -46,7 +46,7 @@ Next, go to `/exam/mapreduce` to launch mapreduce jobs or to `/exam/sparksql` fo
 `hadoop jar GoodBooks-10k-Jobs-2.1.2-mr2.jar`
 
 **SparkSql Job 1 or 2**
-`spark2-submit GoodBooks-10k-Jobs-2.1.2-spark.jar JOB1    
+`spark2-submit GoodBooks-10k-Jobs-2.1.2-spark.jar JOB1`    
 `spark2-submit GoodBooks-10k-Jobs-2.1.2-spark.jar JOB2`
 
 
