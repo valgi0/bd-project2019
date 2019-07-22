@@ -23,13 +23,37 @@ Ogni libro può quindi appartenere a uno dei 4 gruppi:
 
 \subsubsection{Hadoop MapReduce}
 
-Per prima cosa bisogna definire i requisiti in un modello MapReduce.
+Per risolvere l'esercizio sono state calcolate empiricamente le due soglie da utilizzare per classificare i libri.
+Una volta ottenute queste soglie è stato possibile pianificare il numero di job necessari e il loro funzionamento.
+Il problema si può dividere in quattro fasi:
+
 \begin{itemize}
-    \item \textbf{Rating medio}: %%todo breve descrizione di come implementare su mapreduce
-    \item \textbf{Conteggio BookMarks}: %%todo
+    \item \textbf{Calcolare il rating} In questa fase bisogna leggere la tabella rating, eliminare gli attributi non necessari
+    e calcolare la media delle valutazioni per ogni libro.
+    \item \textbf{Calcolare i bookmarks} In questa fase bisogna leggere la tabella to_read, eliminare gli attributi non necessari
+    e calcolare la somma del numero degli utenti che desiderano leggere il libro,tutto questo per ogni libro.
+    \item \textbf{Classificare per rating} In questa fase si classificano i libri comparando il rating calcolato
+    precedentemente con la soglia ricavata empiricamente.
+    \item \textbf{Classificare per bookmarks}In questa fase si classificano i libri comparando il numero degli utenti che li desiderano leggere
+    con la soglia ricavata empiricamente.
+     \item \textbf{Conteggio delle classi}In questa fase si conta il numero di record delle varie classi al fine di determinarne le più
+     frequenti.
+\end{itemize}
+
+In fase di implementazione è stato possibile raggruppare questi step al fine di ottenere un numero minore di job, di conseguenza raggiungere
+livelli di performance migliori.
+L'esercizio è stato svolto aggregando le prime quattro fasi nel job computeAVGRatingJob,
+mentre l'ultima è stata implmentata in counterJob.
+
+\begin{itemize}
+    \item \textbf{computeAVGRatingJob} Questo job legge entrambe le tabelle e realizza le fasi uno e due, per poi fare i calcoli delle fasi tre e quattro.
+    Il jo si conclude con la creazione dell'output, composta dalla semplice classe di appartenenza di ogni libro.
+    \item \textbf{counterJob} Questo job si occupa della lettura del file generato nel job precedente e di contare i valori in esso contenuto al
+    fine di creare come file di output un file contenente il totale di libri per ogni classe.
 \end{itemize}
 
 \subsubsection{Implementazione}
+<<<<<<< HEAD
 %% todo come è stato implementato quindi qunati mapper, quanti reducer, ziffatelle per farlo più veloce
 %% todo considerazioni sulle performance, quali sono i punti più costosi e come sono stati ottimizzati
 \subsubsection{SparkSQL}
@@ -43,6 +67,24 @@ Per ottimizzare le performance di SparkSQL sul nodo del cluster sono stati setta
 \end{itemize}
 
 \subsubsection{Implementazione sparksql}
+=======
+Per implementare il primo job si è reso necessario lo sviluppo di due mapper, uno per ogni tabella.
+Entrambi i mapper leggono dal file gli attributi rilevanti escludendo quelli non necessari al completamento dell'esercizio.
+Nello specifico il mapper relativo alla tabella rating.csv crea come output una lista di book_id - rating per ogni libro, mentre l'altro
+produce una lista di book_id per ogni volta che quel libro è presente nella lista dei libri da leggere di un utente.
+Il reducer che è incaricato della gestione dell'output di questi due mapper è CounterRatingReducer, il quale si occupa anche della classificazione dei
+libri creando un output contenente la classe di appartenenza di ogni libro.
+
+Il secondo job si occupa semplicemente di contare il numero di libri che vengono classificati nelle quattro possibili classi.
+Il mapper utilizzato da questo job è CountMapper e come chiave dell'output utilizza la classe di appartenenza del libro.
+Il reducer utilizzato è CountReducer e scrive sul file di output il numero di volte che un libro è presente in una classe.
+Per questo secondo job è possibile sfruttare al massimo quattro reducer, la causa è il numero di classi che possono avere i libri.
+Il mapper infatti può produrre al massimo quattro tipi diversi di chiave, di conseguenza qualsiasi funzione si utilizza per il partizionamento
+creerà al massimo quattro risultati diversi, limitando di fatto il numero di reducer che si possono sfruttare.
+
+
+\subsection{SparkSQL}
+>>>>>>> efa542a28f1f45e1c383da2e842d68d3c3cc3e1f
 Per questo problema si \è utilizzato a pieno SparkSQL affidandoci alle ottimizzazioni interne del framework. Il problema
 \è stato affrontato tramite i seguenti step:
 \begin{itemize}
