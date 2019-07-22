@@ -39,13 +39,13 @@ You can build the project using gradle or gradlew. In order to build jars you ca
 To run the programs you must go to `isi-vclust9.csr.unibo.it` and go to lvalgimigli's home.
 Next, go to `/exam/mapreduce` to launch mapreduce jobs or to `/exam/sparksql` for sparksql jobs.
 
-###MapReduce Job 1
+**MapReduce Job 1**
 `hadoop jar GoodBooks-10k-Jobs-2.1.2-mr1.jar`
 
-###MapReduce Job 2
+**MapReduce Job 2**
 `hadoop jar GoodBooks-10k-Jobs-2.1.2-mr2.jar`
 
-###SparkSql Job 1 or 2
+**SparkSql Job 1 or 2**
 `spark2-submit GoodBooks-10k-Jobs-2.1.2-spark.jar JOB1`
 `spark2-submit GoodBooks-10k-Jobs-2.1.2-spark.jar JOB2`
 
