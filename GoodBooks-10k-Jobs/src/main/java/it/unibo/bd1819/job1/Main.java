@@ -1,8 +1,8 @@
-package it.unibo.bd1819.raitingMedio;
+package it.unibo.bd1819.job1;
 
-import it.unibo.bd1819.raitingMedio.filter.FilterJob;
-import it.unibo.bd1819.raitingMedio.join.JoinJob;
-import it.unibo.bd1819.raitingMedio.sort.SortJob;
+import it.unibo.bd1819.job1.filter.FilterJob;
+import it.unibo.bd1819.job1.join.JoinJob;
+import it.unibo.bd1819.job1.sort.SortJob;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapreduce.Job;
 

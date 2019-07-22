@@ -1,4 +1,4 @@
-package it.unibo.bd1819.raitingMedio.sort;
+package it.unibo.bd1819.job1.sort;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;

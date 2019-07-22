@@ -1,4 +1,4 @@
-package it.unibo.bd1819.raitingMedio.filter;
+package it.unibo.bd1819.job1.filter;
 
 import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.LongWritable;

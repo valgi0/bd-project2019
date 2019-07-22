@@ -80,18 +80,20 @@ Il dataset è composto dai seguenti file:
 
 \section{Preparazione dei dati}
 
-Il dataset per l'esame si trova sià nel nodo \texttt{vclust9} nella home di \texttt{lvalgimigli} %%todo add soro
+Il referente del gruppo è lo studente Lorenzo Valgimigli. Tutti i file saranno presenti nella sua home.
+
+Il dataset per l'esame si trova nel nodo \texttt{vclust9} nella home di \texttt{lvalgimigli} %%todo add soro
 all'indirizzo \texttt{isi-vclust9.csr.unibo.it//home/lvalgimigli/exam/dataset/}
-I dati venivano indicati dal sito come completi e puliti per tanto non è stata necessarie una ulteriore fase di
-pulizia dati. E' stato solo sufficente dedicare del tempo ad capire il dominio e il significato degli attributi
+I dati venivano indicati dal sito come completi e puliti per tanto non è stata necessaria una ulteriore fase di
+pulizia dati. E' stato solo sufficente dedicare del tempo a capire il dominio e il significato degli attributi
 delle varie tabelle.
 
 
 \section{Jobs}
 
 L'obbiettivo del progetto è quello di realizzare 2 jobs utilizzando sia \texttt{Hadoop MapReduce} che
-\texttt{Spark}. In quest'ultimo caso è stato scelto di utilizzare \texttt{Spark-Sql}. Di seguito
-vengono esposti i Jobs:
+\texttt{Spark}. In quest'ultimo caso è stato scelto di utilizzare \texttt{SparkSql}. Di seguito
+vengono esposti i Job:
     \begin{enumerate}
         \item \textbf{Job1}: Trovare i 500 migliori autori nel dataset. Ovvero, trovare i 500 autori la cui media di punteggio
             ottenuto nei loro libri è più alto. Per tanto sarà necessario calcolare per ogni libro il rating medio.
@@ -101,8 +103,8 @@ vengono esposti i Jobs:
     \end{enumerate}
 
 E' bene sottolineare che già dalla fase di analisi dei requisiti si evince un problema che dovrà essere gestito: il campo
-\texttt{author} in \texttt{books.csv} è composto da una lista di autori per tanto sarà necessario dividerli.
-Per sviluppare il progetto si è scelto di creare un progetto \texttt{gradle} usando \texttt{Java} per la parte di
+\texttt{authors} in \texttt{books.csv} è composto da una lista di autori, per tanto sarà necessario dividerli.
+Si è scelto di creare un progetto \texttt{gradle} usando \texttt{Java} per la parte di
 \texttt{Hadoop MapReduce} mentre si è scelto di utilizzare \texttt{Scala} per la parte di \texttt{SparkSQL}
 
 \newpage
@@ -112,7 +114,8 @@ Per sviluppare il progetto si è scelto di creare un progetto \texttt{gradle} us
 \input{Job2.tex}
 
 
-
+\newpage
+    \input{miscellaneous.tex}
 
 
 \end{document}

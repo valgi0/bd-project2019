@@ -1,4 +1,4 @@
-package it.unibo.bd1819.raitingMedio.join;
+package it.unibo.bd1819.job1.join;
 
 
 import it.unibo.bd1819.Main;
@@ -20,9 +20,9 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 public class JoinJob {
     public static Job istance(final Configuration conf) throws Exception {
         FileSystem fs = FileSystem.get(conf);
-        Path inputPath1 = new Path("ratings.csv"),
-                inputPath2 = new Path("books.csv"),
-                outputPath = new Path("outputJoin");
+        Path inputPath1 = new Path("./exam/dataset/ratings.csv"),
+                inputPath2 = new Path("./exam/dataset/books.csv"),
+                outputPath = new Path("./exam/output/outputJoin");
         if (fs.exists(outputPath)) {
             fs.delete(outputPath, true);
         }

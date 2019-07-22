@@ -1,4 +1,4 @@
-package it.unibo.bd1819.raitingMedio.filter;
+package it.unibo.bd1819.job1.filter;
 
 
 import it.unibo.bd1819.Main;
@@ -22,8 +22,8 @@ public class FilterJob {
 
     public static Job istance(final Configuration conf) throws Exception {
         FileSystem fs = FileSystem.get(conf);
-        Path inputPath = new Path("outputJoin"),
-                outputPath = new Path("outputFilter");
+        Path inputPath = new Path("./exam/output/outputJoin"),
+                outputPath = new Path("./exam/output/outputFilter");
         if (fs.exists(outputPath)) {
             fs.delete(outputPath, true);
         }

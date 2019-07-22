@@ -1,4 +1,4 @@
-package it.unibo.bd1819.raitingMedio.join;
+package it.unibo.bd1819.job1.join;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;

@@ -1,6 +1,6 @@
 \subsection{Job1: Best 500 Authors}
 
-In questo primo esercizio lo scopo consiste nel trovare i 500 autori che hanno le medie delle valutzioni più alte.
+In questo primo esercizio lo scopo consiste nel trovare i 500 autori che hanno le medie delle valutazioni più alte.
 I punteggi vanno da 1 a 5 e sono assegnati dagli utenti ai libri, mentre per ogni libro è presente la lista di autori che
 partecipato alla sua scrittura.
 
@@ -17,21 +17,21 @@ valutazioni per ogni libro e, successivamente, calcolare la media del punteggio 
 Per fare questa operazione si è resa necessaria la tabella books.csv, nella quale sono presenti gli autori che hanno
 partecipato alla scrittura dei libri.
 In questa seconda tabella sono presenti moltissimi attributi, ma gli unici che servono sono la coppia id\_book
-(chiave primaria della tabella) e la lista di autori (separati da ;).
+(chiave primaria della tabella) e la lista di autori (separati da ,).
 
-Per risolvere il problema occorre come prima cosa effettuare un join tra le due tabelle sull'attributo id\_book, comune ad entrambe.
-Occorre inoltre calcolare la media delle recenzioni di ogni libro, per poi dare un punteggio ad ogni autore pari alla media delle
+Per risolvere il problema occorre come prima cosa effettuare un join tra le due tabelle sull'attributo id\_book comune ad entrambe.
+Occorre inoltre calcolare la media delle recensioni di ogni libro, per poi dare un punteggio ad ogni autore pari alla media delle
 valutazioni di tutti i libri sui quali ha lavorato.
 Una volta ottenuta una tabella con attributi autore - rating\_medio manca solo la fase di sorting per ordinare i risultati.
 
 \subsubsection{Hadoop MapReduce}
 Per svolgere l'esercizio è stato necessario implementare più job, è stato possibile ridurne il numero fino a tre job distinti tra loro.
 Nello specifico il primo di questi si occupa di fare il join tra le due tabelle, il secondo svolge un operazione di raggruppamento e l'ultimo
-ordina correttamento e globalmente gli elementi.
+ordina correttamente e globalmente gli elementi.
 
 \begin{itemize} %%todo aggiungi il nome dei file (mapper e reducer) quando parli di loro
     \item \textbf{ Fase di Join }: Per questa fase è stato definito un job che esegua il join delle due tabelli sulla chiave
-    id\_book. Questo job è composto da due Mapper e un Reducer, i mapper (uno a tabella) si occupa di leggere la tabella, escludere
+    id\_book. Questo job è composto da due Mapper e un Reducer. I mapper (uno a tabella) si occupano di leggere la tabella, escludere
     gli attributi senza utilità e di creare come output una lista di coppie id\_book - attributo.
     Dalla tabella books.csv viene estrapolato l'attributo authors e dalla seconda il rating; il reducer si occupa invece
     di raccogliere questi output, calcolare la media delle votazioni di ogni libro per poi produrre un output composto dalla
@@ -49,7 +49,7 @@ ordina correttamento e globalmente gli elementi.
 
     \item \textbf{Fase di Sorting} : Nella fase precedente si sono ottenuti come output risultati disordinati globalmente.
     Per risolvere un ploblema di sorting globale è stato utilizzato inizialmente un partitioner personalizzato, basato su soglie del rating\_medio
-    che garantissero una distribuzione omogenea dei dati sul reducer garantendo l'ordinamento grazie appunto alle soglie prestabilite.
+    che garantissero una distribuzione omogenea dei dati sul reducer, garantendo l'ordinamento grazie appunto alle soglie prestabilite.
     Questa implementazione però non poteva funzionare con un numero variabile di reducer, il numero di possibili soglie utilizzabili erano limitate;
     è stato perciò deciso di utilizzare il TotaOrderPartitioner.
     Questo metodo calcola in automatico le soglie partendo da un numero specificabile di recond, permettendo al job di poter essere eseguito su un numero qualsiasi
@@ -57,7 +57,20 @@ ordina correttamento e globalmente gli elementi.
     In uscita da questo job si ottiene quindi la lista degli autori e del loro rating\_medio ordinati dal rating più alto a quello più basso.
     \end{itemize}
 
-\subsubsection{SparkSQL}
+Il comando per lanciare l'eseguibile è il seguente
+\begin{verbatim}
+    hadoop jar GoodBooks-10k-Jobs-2.1.2-mr1.jar
+\end{verbatim}
+Va lanciato dalla directory: \texttt{/home/lvalgimigli/exam/mapreduce}
+
+\subsubsection{Hadoop Jobs History}
+
+Di seguito i link alle history dei job su \texttt{YARN}
+\begin{itemize}
+    \item \texttt{http://isi-vclust0.csr.unibo.it:19888/jobhistory/job/job\_1560510165054\_1738}
+    \item \texttt{http://isi-vclust0.csr.unibo.it:19888/jobhistory/job/job\_1560510165054\_1739}
+    \item \texttt{http://isi-vclust0.csr.unibo.it:19888/jobhistory/job/job\_1560510165054\_1740}
+\end{itemize}
 
 \subsubsection{SetUp SparkSql}
 Per ottimizzare le performance di SparkSQL sul nodo del cluster sono stati settati i seguenti parametri:
@@ -88,7 +101,7 @@ Il Job è stato realizzando utilizzando a pieno SparkSQL affidandoci alle ottimi
         GROUP BY book_id
     \end{verbatim}
     \item \texttt{Join}: E' quindi necessario fare il Join tra le tabelle books.csv e quella calcolata nel passo precedente. Entrambe sono relativamente piccole
-    per cui si è scelto di utlizzare esplicitamente il metodo Broadcast Join usando come tabella Broadcast \texttt{books.csv} selezionando solo i campi necessari.
+    per cui si è scelto di utlizzare esplicitamente il metodo Broadcast hash Join usando come tabella Broadcast \texttt{books.csv} selezionando solo i campi necessari.
     \item \texttt{Media ratings dei vari autori}: Una volta effettuato il Join sarà necessario calcolare la media dei rating di ogni libro per ogni autore. Per fare ciò
     è stata utilizzata la seguente Query:
     \begin{verbatim}

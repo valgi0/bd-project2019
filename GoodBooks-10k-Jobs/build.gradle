@@ -114,7 +114,7 @@ task mapReduceJarJob2(type: ShadowJar) {
 
 task mapReduceJarJob1(type: ShadowJar) {
     classifier = 'mr1'
-    manifest.attributes 'Main-Class': 'it.unibo.bd1819.ratingMedio.Main'
+    manifest.attributes 'Main-Class': 'it.unibo.bd1819.job1.Main'
     from(shadowJar.from())
     zip64 true
 }
