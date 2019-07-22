@@ -1,0 +1,16 @@
+
+\section{Miscellaneous}
+
+\subsection{Problematiche ottimizzazione}
+
+Il problema che abbiamo riscontrato per quanto concerne l'ottimizzazione è la dimensione del DataSet.
+Il dataset è di dimensioni relativamente ridotte: sotto i 100 MB. Per tanto l'ottimizzazione fatta dal
+framework SparkSQL di default è già molto buona. Sono stati provati vari settaggi per provare ad apportare delle migliorie
+ma la piccola dimensione non ha permesso l'apprezzamento di sostanziali differenze.
+
+\subsection{Problematica Job1}
+
+Per lo sviluppo del Job1 utilizzando il modello MapReduce non si è considerato opportuno allocare un intero Job per
+selezionare i primi 500 autori, infatti sarebbe stata un'operazione pesante per il modello MapReduce mentre un semplice script
+la potrebbe farlo con un costo computazionale decisamente più piccolo. Ordinarli secondo il rating medio è stato considerato sufficente.
+

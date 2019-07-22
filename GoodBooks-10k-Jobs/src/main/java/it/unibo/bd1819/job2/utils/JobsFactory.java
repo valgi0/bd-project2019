@@ -5,10 +5,7 @@ import it.unibo.bd1819.job2.mappers.CountMapper;
 import it.unibo.bd1819.job2.mappers.CounterBMJobMapper;
 import it.unibo.bd1819.job2.mappers.CounterRatingMapper;
 import it.unibo.bd1819.job2.reducers.CountReducer;
-import it.unibo.bd1819.job2.reducers.CounterBMJobReducer;
 import it.unibo.bd1819.job2.reducers.CounterRatingReducer;
-import it.unibo.bd1819.raitingMedio.join.BookMapper;
-import it.unibo.bd1819.raitingMedio.join.RaitingMapper;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -26,10 +23,10 @@ import java.io.IOException;
 public class JobsFactory {
 
     private enum pathToFiles{
-        RATING ("./bd-project2019-master/dataset/ratings.csv"),
-        BOOKMARKS ("./bd-project2019-master/dataset/to_read.csv"),
-        OUTJOB2 ("./bd-project2019-master/dataset/output/it.unibo.bd1819.job2"),
-        OUTJOB3 ("./bd-project2019-master/dataset/output/job3");
+        RATING ("./exam/dataset/ratings.csv"),
+        BOOKMARKS ("./exam/dataset/to_read.csv"),
+        OUTJOB2 ("./exam/dataset/output/job2"),
+        OUTJOB3 ("./exam/dataset/output/job3");
 
         String path;
         pathToFiles(String path){

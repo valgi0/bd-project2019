@@ -13,7 +13,7 @@ Le tabelle che entrano in gioco per questo job sono le seguenti:
 La prima verrà utilizzata per calcolare il rating medio mentre la seconda verrà utilizzata per calcolare i Bookmarks.
 Dopo di che i risultati ottenuti saranno uniti in una unica tabella e da li verranno calcolati i risultati.
 
-Ogni libro può quindi appartenere a uno dei 4 gruppi:
+Ogni libro appartiene a uno dei 4 gruppi:
 \begin{itemize}
     \item \textit{Molti Bookmarks e alto rating}
     \item \textit{Molti Bookmarks e basso rating}
@@ -47,7 +47,7 @@ mentre l'ultima è stata implmentata in counterJob.
 
 \begin{itemize}
     \item \textbf{computeAVGRatingJob} Questo job legge entrambe le tabelle e realizza le fasi uno e due, per poi fare i calcoli delle fasi tre e quattro.
-    Il jo si conclude con la creazione dell'output, composta dalla semplice classe di appartenenza di ogni libro.
+    Il job si conclude con la creazione dell'output, composta dalla semplice classe di appartenenza di ogni libro.
     \item \textbf{counterJob} Questo job si occupa della lettura del file generato nel job precedente e di contare i valori in esso contenuto al
     fine di creare come file di output un file contenente il totale di libri per ogni classe.
 \end{itemize}
@@ -70,8 +70,20 @@ Per questo secondo job è possibile sfruttare al massimo quattro reducer, la cau
 Il mapper infatti può produrre al massimo quattro tipi diversi di chiave, di conseguenza qualsiasi funzione si utilizza per il partizionamento
 creerà al massimo quattro risultati diversi, limitando di fatto il numero di reducer che si possono sfruttare.
 
+Il comando per lanciare l'eseguibile è il seguente
+\begin{verbatim}
+    hadoop jar GoodBooks-10k-Jobs-2.1.2-mr1.jar
+\end{verbatim}
+Va lanciato dalla directory: \texttt{/home/lvalgimigli/exam/mapreduce}
 
-\subsubsection{SparkSQL}
+
+\subsubsection{Hadoop Jobs History}
+
+Di seguito i link alle history dei job su \texttt{YARN}
+\begin{itemize}
+    \item \texttt{http://isi-vclust0.csr.unibo.it:19888/jobhistory/job/job\_1560510165054\_1741}
+    \item \texttt{http://isi-vclust0.csr.unibo.it:19888/jobhistory/job/job\_1560510165054\_1742}
+\end{itemize}
 
 \subsubsection{SetUp SparkSql}
 Per ottimizzare le performance di SparkSQL sul nodo del cluster sono stati settati i seguenti parametri:

@@ -1,0 +1,23 @@
+\BOOKMARK [1][-]{section.1}{Introduzione}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Descrizione Dataset}{section.1}% 2
+\BOOKMARK [3][-]{subsubsection.1.1.1}{Descrizione File}{subsection.1.1}% 3
+\BOOKMARK [1][-]{section.2}{Preparazione dei dati}{}% 4
+\BOOKMARK [1][-]{section.3}{Jobs}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{Job1: Best 500 Authors}{section.3}% 6
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Pianificazione}{subsection.3.1}% 7
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Hadoop MapReduce}{subsection.3.1}% 8
+\BOOKMARK [3][-]{subsubsection.3.1.3}{Hadoop Jobs History}{subsection.3.1}% 9
+\BOOKMARK [3][-]{subsubsection.3.1.4}{SetUp SparkSql}{subsection.3.1}% 10
+\BOOKMARK [3][-]{subsubsection.3.1.5}{Implementazione sparksql}{subsection.3.1}% 11
+\BOOKMARK [3][-]{subsubsection.3.1.6}{Conclusioni}{subsection.3.1}% 12
+\BOOKMARK [2][-]{subsection.3.2}{Job2: Correlazione tra rating e bookmarks}{section.3}% 13
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Pianificazione}{subsection.3.2}% 14
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Hadoop MapReduce}{subsection.3.2}% 15
+\BOOKMARK [3][-]{subsubsection.3.2.3}{Implementazione}{subsection.3.2}% 16
+\BOOKMARK [3][-]{subsubsection.3.2.4}{Hadoop Jobs History}{subsection.3.2}% 17
+\BOOKMARK [3][-]{subsubsection.3.2.5}{SetUp SparkSql}{subsection.3.2}% 18
+\BOOKMARK [3][-]{subsubsection.3.2.6}{Implementazione sparksql}{subsection.3.2}% 19
+\BOOKMARK [3][-]{subsubsection.3.2.7}{Conclusioni}{subsection.3.2}% 20
+\BOOKMARK [1][-]{section.4}{Miscellaneous}{}% 21
+\BOOKMARK [2][-]{subsection.4.1}{Problematiche ottimizzazione}{section.4}% 22
+\BOOKMARK [2][-]{subsection.4.2}{Problematica Job1}{section.4}% 23

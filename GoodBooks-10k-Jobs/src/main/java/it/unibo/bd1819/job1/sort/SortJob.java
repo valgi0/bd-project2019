@@ -1,4 +1,4 @@
-package it.unibo.bd1819.raitingMedio.sort;
+package it.unibo.bd1819.job1.sort;
 
 
 import it.unibo.bd1819.Main;
@@ -21,9 +21,9 @@ public class SortJob {
 
 
     public static Job istance(final Configuration conf) throws Exception {
-        Path inputPath = new Path("outputFilter"),
-                outputPath = new Path("outputSort"),
-                partition = new Path("partition");
+        Path inputPath = new Path("./exam/output/outputFilter"),
+                outputPath = new Path("./exam/output/outputSort"),
+                partition = new Path("./exam/partition");
         FileSystem fs2 = FileSystem.get(new Configuration());
 
         if (fs2.exists(outputPath)) {
@@ -44,7 +44,7 @@ public class SortJob {
         joinPrincipalBasicJob.setOutputFormatClass(TextOutputFormat.class);
         FileInputFormat.addInputPath(joinPrincipalBasicJob, inputPath);
         joinPrincipalBasicJob.setPartitionerClass(TotalOrderPartitioner.class);
-        TotalOrderPartitioner.setPartitionFile(joinPrincipalBasicJob.getConfiguration(), new Path("partition", "part.lst"));
+        TotalOrderPartitioner.setPartitionFile(joinPrincipalBasicJob.getConfiguration(), partition);
         InputSampler.writePartitionFile(joinPrincipalBasicJob, new InputSampler.RandomSampler<>(1, 1000));
         FileOutputFormat.setOutputPath(joinPrincipalBasicJob, outputPath);
 
